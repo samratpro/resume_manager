@@ -1,0 +1,449 @@
+{% extends 'resumemanager/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" id="applicationForm">
+    {% csrf_token %}
+
+    <!-- Section 1: General Information -->
+    <div class="section-header">
+        <div class="section-number">Section 1 / 3</div>
+        <h2 class="section-title">Informations générales</h2>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}" class="form-label required">Nom de famille</label>
+        {{ form.last_name }}
+        {% if form.last_name.errors %}
+            <ul class="errorlist">
+                {% for error in form.last_name.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}" class="form-label required">Prénom</label>
+        {{ form.first_name }}
+        {% if form.first_name.errors %}
+            <ul class="errorlist">
+                {% for error in form.first_name.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.date_of_birth.id_for_label }}" class="form-label required">Date de naissance</label>
+        {{ form.date_of_birth }}
+        {% if form.date_of_birth.errors %}
+            <ul class="errorlist">
+                {% for error in form.date_of_birth.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.country.id_for_label }}" class="form-label required">Pays de résidence</label>
+        {{ form.country }}
+        {% if form.country.errors %}
+            <ul class="errorlist">
+                {% for error in form.country.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.city.id_for_label }}" class="form-label required">Ville de résidence</label>
+        {{ form.city }}
+        {% if form.city.errors %}
+            <ul class="errorlist">
+                {% for error in form.city.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.phone.id_for_label }}" class="form-label required">Numéro de téléphone principal (WhatsApp si possible)</label>
+        {{ form.phone }}
+        {% if form.phone.errors %}
+            <ul class="errorlist">
+                {% for error in form.phone.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}" class="form-label required">Adresse e-mail</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <ul class="errorlist">
+                {% for error in form.email.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.cv.id_for_label }}" class="form-label">CV (optionnel - PDF, DOC, DOCX)</label>
+        {{ form.cv }}
+        {% if form.cv.errors %}
+            <ul class="errorlist">
+                {% for error in form.cv.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.linkedin.id_for_label }}" class="form-label">Lien LinkedIn (optionnel)</label>
+        {{ form.linkedin }}
+        {% if form.linkedin.errors %}
+            <ul class="errorlist">
+                {% for error in form.linkedin.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- Section 2: Profile & Availability -->
+    <div class="section-header" style="margin-top: 3rem;">
+        <div class="section-number">Section 2 / 3</div>
+        <h2 class="section-title">Profil & Disponibilités</h2>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Situation actuelle</label>
+        <div class="radio-group">
+            {% for value, label in form.current_situation.field.choices %}
+                <div class="radio-item">
+                    <input type="radio"
+                           id="current_situation_{{ forloop.counter }}"
+                           name="current_situation"
+                           value="{{ value }}"
+                           {% if form.current_situation.value == value %}checked{% endif %}
+                           required>
+                    <label for="current_situation_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% if form.current_situation.errors %}
+            <ul class="errorlist">
+                {% for error in form.current_situation.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Type de contrat recherché (plusieurs réponses possibles)</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="contract_cdi" name="contract_types" value="CDI">
+                <label for="contract_cdi">CDI</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="contract_cdd" name="contract_types" value="CDD">
+                <label for="contract_cdd">CDD</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="contract_freelance" name="contract_types" value="Freelance">
+                <label for="contract_freelance">Freelance / Prestation</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="contract_parttime" name="contract_types" value="Temps partiel">
+                <label for="contract_parttime">Temps partiel</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Disponibilité pour démarrer</label>
+        <div class="radio-group">
+            {% for value, label in form.availability.field.choices %}
+                <div class="radio-item">
+                    <input type="radio"
+                           id="availability_{{ forloop.counter }}"
+                           name="availability"
+                           value="{{ value }}"
+                           {% if form.availability.value == value %}checked{% endif %}
+                           required>
+                    <label for="availability_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% if form.availability.errors %}
+            <ul class="errorlist">
+                {% for error in form.availability.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group" id="availability_details_group" style="display: none;">
+        <label for="{{ form.availability_details.id_for_label }}" class="form-label">Précisez votre date ou délai estimé</label>
+        {{ form.availability_details }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Êtes-vous flexible pour un temps plein ?</label>
+        <div class="radio-group">
+            {% for value, label in form.full_time_flexibility.field.choices %}
+                <div class="radio-item">
+                    <input type="radio"
+                           id="flexibility_{{ forloop.counter }}"
+                           name="full_time_flexibility"
+                           value="{{ value }}"
+                           {% if form.full_time_flexibility.value == value %}checked{% endif %}
+                           required>
+                    <label for="flexibility_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% if form.full_time_flexibility.errors %}
+            <ul class="errorlist">
+                {% for error in form.full_time_flexibility.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group" id="flexibility_conditions_group" style="display: none;">
+        <label for="{{ form.full_time_conditions.id_for_label }}" class="form-label">Précisez vos contraintes</label>
+        {{ form.full_time_conditions }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Volume horaire souhaité par semaine</label>
+        <div class="radio-group">
+            {% for value, label in form.weekly_hours.field.choices %}
+                <div class="radio-item">
+                    <input type="radio"
+                           id="hours_{{ forloop.counter }}"
+                           name="weekly_hours"
+                           value="{{ value }}"
+                           {% if form.weekly_hours.value == value %}checked{% endif %}
+                           required>
+                    <label for="hours_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% if form.weekly_hours.errors %}
+            <ul class="errorlist">
+                {% for error in form.weekly_hours.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Disponibilités par tranches horaires</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="time_morning" name="time_slots" value="Matin (8h-12h)">
+                <label for="time_morning">Matin (8h-12h)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="time_afternoon" name="time_slots" value="Après-midi (12h-17h)">
+                <label for="time_afternoon">Après-midi (12h-17h)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="time_evening" name="time_slots" value="Soirée (17h-22h)">
+                <label for="time_evening">Soirée (17h-22h)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="time_night" name="time_slots" value="Nuit (22h-8h)">
+                <label for="time_night">Nuit (22h-8h)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="time_flexible" name="time_slots" value="Totalement flexible">
+                <label for="time_flexible">Totalement flexible</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Disponibilités par jour de la semaine</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_mon" name="week_days" value="Lundi">
+                <label for="day_mon">Lundi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_tue" name="week_days" value="Mardi">
+                <label for="day_tue">Mardi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_wed" name="week_days" value="Mercredi">
+                <label for="day_wed">Mercredi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_thu" name="week_days" value="Jeudi">
+                <label for="day_thu">Jeudi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_fri" name="week_days" value="Vendredi">
+                <label for="day_fri">Vendredi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_sat" name="week_days" value="Samedi">
+                <label for="day_sat">Samedi</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_sun" name="week_days" value="Dimanche">
+                <label for="day_sun">Dimanche</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="day_all" name="week_days" value="7j/7">
+                <label for="day_all">7j/7</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Préférence de mode de travail</label>
+        <div class="radio-group">
+            {% for value, label in form.work_mode.field.choices %}
+                <div class="radio-item">
+                    <input type="radio"
+                           id="workmode_{{ forloop.counter }}"
+                           name="work_mode"
+                           value="{{ value }}"
+                           {% if form.work_mode.value == value %}checked{% endif %}
+                           required>
+                    <label for="workmode_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        {% if form.work_mode.errors %}
+            <ul class="errorlist">
+                {% for error in form.work_mode.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.personal_constraints.id_for_label }}" class="form-label">Contrainte personnelle importante à signaler ? (optionnel)</label>
+        {{ form.personal_constraints }}
+        {% if form.personal_constraints.errors %}
+            <ul class="errorlist">
+                {% for error in form.personal_constraints.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <!-- Section 3: Languages -->
+    <div class="section-header" style="margin-top: 3rem;">
+        <div class="section-number">Section 3 / 3</div>
+        <h2 class="section-title">Langues</h2>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label required">Langues maîtrisées (niveau professionnel ou courant)</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_french" name="languages" value="Français">
+                <label for="lang_french">Français</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_english" name="languages" value="Anglais">
+                <label for="lang_english">Anglais</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_arabic" name="languages" value="Arabe">
+                <label for="lang_arabic">Arabe</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_spanish" name="languages" value="Espagnol">
+                <label for="lang_spanish">Espagnol</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_german" name="languages" value="Allemand">
+                <label for="lang_german">Allemand</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="lang_italian" name="languages" value="Italien">
+                <label for="lang_italian">Italien</label>
+            </div>
+        </div>
+    </div>
+
+    {{ language_formset.management_form }}
+    <div id="language-details">
+        {% for form in language_formset %}
+            <div class="card language-card" data-language="{{ form.instance.language }}" style="display: none;">
+                <h4 class="card-title">📝 <span class="language-name"></span></h4>
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="button-group">
+        <button type="submit" class="btn btn-primary">Soumettre ma candidature</button>
+    </div>
+</form>
+
+<script>
+    // Show/hide conditional fields
+    document.addEventListener('DOMContentLoaded', function() {
+        // Availability details
+        const availabilityRadios = document.querySelectorAll('input[name="availability"]');
+        const availabilityDetailsGroup = document.getElementById('availability_details_group');
+
+        availabilityRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'later') {
+                    availabilityDetailsGroup.style.display = 'block';
+                } else {
+                    availabilityDetailsGroup.style.display = 'none';
+                }
+            });
+        });
+
+        // Full-time flexibility conditions
+        const flexibilityRadios = document.querySelectorAll('input[name="full_time_flexibility"]');
+        const flexibilityConditionsGroup = document.getElementById('flexibility_conditions_group');
+
+        flexibilityRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'conditions') {
+                    flexibilityConditionsGroup.style.display = 'block';
+                } else {
+                    flexibilityConditionsGroup.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize on page load
+        const checkedAvailability = document.querySelector('input[name="availability"]:checked');
+        if (checkedAvailability && checkedAvailability.value === 'later') {
+            availabilityDetailsGroup.style.display = 'block';
+        }
+
+        const checkedFlexibility = document.querySelector('input[name="full_time_flexibility"]:checked');
+        if (checkedFlexibility && checkedFlexibility.value === 'conditions') {
+            flexibilityConditionsGroup.style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}

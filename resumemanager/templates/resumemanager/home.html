@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALL CENTER TN - Candidature</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e293b 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        header {
+            padding: 1.5rem 0;
+        }
+
+        header .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .recruiter-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .recruiter-link:hover {
+            color: white;
+        }
+
+        .hero-section {
+            padding: 3rem 0 5rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(20, 184, 166, 0.2);
+            border-radius: 9999px;
+            color: #14b8a6;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #d1d5db;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .feature-icon {
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+            background: rgba(20, 184, 166, 0.2);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .feature-content h3 {
+            color: white;
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-content p {
+            color: #d1d5db;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: #14b8a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: all 0.2s;
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
+        }
+
+        .cta-button:hover {
+            background: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(20, 184, 166, 0.6);
+        }
+
+        .time-estimate {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .hero-image {
+            position: relative;
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-image {
+                display: block;
+            }
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: -1.5rem;
+            right: -1.5rem;
+            background: #2563eb;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating-badge .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .floating-badge .number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .floating-badge .label {
+            font-size: 0.875rem;
+            color: #e5e7eb;
+        }
+
+        .process-section {
+            padding-bottom: 5rem;
+        }
+
+        .process-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .process-card h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .process-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .process-item {
+            text-align: center;
+            color: #d1d5db;
+        }
+
+        .process-number {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(20, 184, 166, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #14b8a6;
+            font-weight: 600;
+        }
+
+        .process-item h4 {
+            color: #14b8a6;
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .process-item p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>CALL CENTER TN</h1>
+                <a href="{% url 'recruiter_login' %}" class="recruiter-link">Espace Recruteur →</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Left Content -->
+                <div>
+                    <div class="badge">Recrutement en cours</div>
+
+                    <h1 class="hero-title">
+                        Candidature<br>
+                        <span class="text-gradient">CALL CENTER TN</span>
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Rejoignez notre équipe de professionnels du call center.
+                    </p>
+
+                    <div class="features">
+                        <div class="feature-item">
+                            <div class="feature-icon">👥</div>
+                            <div class="feature-content">
+                                <h3>Qui nous sommes</h3>
+                                <p>Call center professionnel spécialisé dans la relation client multilingue.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-content">
+                                <h3>Ce que nous recherchons</h3>
+                                <p>Profils call center, télévente, service client, support technique et management.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-content">
+                                <h3>Confidentialité assurée</h3>
+                                <p>Vos informations resteront strictement confidentielles.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 1.5rem;">
+                        <a href="{% url 'application_form' %}" class="cta-button">
+                            Commencer ma candidature
+                            <span>→</span>
+                        </a>
+                        <p class="time-estimate">⏱️ Temps estimé : 15-20 minutes</p>
+                    </div>
+                </div>
+
+                <!-- Right Image -->
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1647866427893-0057366e91b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWxsJTIwY2VudGVyJTIwaGVhZHNldCUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NjQyOTQ5MjR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Call Center Professional">
+                    <div class="floating-badge">
+                        <div class="icon">📞</div>
+                        <div class="number">100%</div>
+                        <div class="label">Professionnel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <div class="process-card">
+                <h3>📋 Processus de candidature</h3>
+                <div class="process-grid">
+                    <div class="process-item">
+                        <div class="process-number">1</div>
+                        <h4>Formulaire détaillé</h4>
+                        <p>13 sections pour mieux vous connaître</p>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">2</div>
+                        <h4>Upload CV & Vocal</h4>
+                        <p>Présentez-vous de manière complète</p>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">3</div>
+                        <h4>Retour par Email</h4>
+                        <p>Réponse sous 7 jours maximum</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

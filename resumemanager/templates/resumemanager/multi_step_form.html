@@ -1,0 +1,1313 @@
+{% extends 'resumemanager/base.html' %}
+
+{% block extra_css %}
+<style>
+    .form-section {
+        display: none;
+    }
+    .form-section.active {
+        display: block;
+        animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        gap: 1rem;
+    }
+    .experience-item {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+    }
+    .remove-btn {
+        background: #ef4444;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+    .add-btn {
+        background: #10b981;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+    #audioRecorder {
+        text-align: center;
+        padding: 2rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .record-btn {
+        background: #ef4444;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 1rem;
+    }
+    .record-btn.recording {
+        background: #dc2626;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    .final-checklist {
+        background: #f0fdf4;
+        border: 2px solid #86efac;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    .checklist-item {
+        display: flex;
+        align-items: start;
+        margin-bottom: 0.75rem;
+        color: #15803d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="progress-bar">
+    <div class="progress-bar-fill" id="progressBar" style="width: 7.69%;"></div>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="multiStepForm">
+    {% csrf_token %}
+
+    <!-- Section 1: Informations générales -->
+    <div class="form-section active" data-section="1">
+        <div class="section-header">
+            <div class="section-number">Section 1 / 13</div>
+            <h2 class="section-title">Informations générales</h2>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name" class="form-label required">Nom de famille</label>
+            <input type="text" id="last_name" name="last_name" class="form-input" placeholder="Votre nom" required>
+        </div>
+
+        <div class="form-group">
+            <label for="first_name" class="form-label required">Prénom</label>
+            <input type="text" id="first_name" name="first_name" class="form-input" placeholder="Votre prénom" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date_of_birth" class="form-label required">Date de naissance</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+            <label for="country" class="form-label required">Pays de résidence</label>
+            <select id="country" name="country" class="form-select" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Tunisie">Tunisie</option>
+                <option value="France">France</option>
+                <option value="Maroc">Maroc</option>
+                <option value="Algérie">Algérie</option>
+                <option value="Autre">Autre</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="city" class="form-label required">Ville de résidence</label>
+            <input type="text" id="city" name="city" class="form-input" placeholder="Votre ville" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone" class="form-label required">Numéro de téléphone principal (WhatsApp si possible)</label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="+216 XX XXX XXX" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="form-label required">Adresse e-mail</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cv" class="form-label">CV (optionnel)</label>
+            <input type="file" id="cv" name="cv" class="form-input" accept=".pdf,.doc,.docx">
+            <small style="color: #64748b; font-size: 0.875rem;">Formats acceptés : .pdf,.doc,.docx</small>
+        </div>
+
+        <div class="form-group">
+            <label for="linkedin" class="form-label">Lien LinkedIn (optionnel)</label>
+            <input type="url" id="linkedin" name="linkedin" class="form-input" placeholder="https://linkedin.com/in/votre-profil">
+        </div>
+
+        <div class="nav-buttons">
+            <div></div>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 2: Profil & Disponibilités -->
+    <div class="form-section" data-section="2">
+        <div class="section-header">
+            <div class="section-number">Section 2 / 13</div>
+            <h2 class="section-title">Profil & Disponibilités</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Situation actuelle</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="situation1" name="current_situation" value="En poste" required>
+                    <label for="situation1">En poste</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="situation2" name="current_situation" value="En recherche d'emploi">
+                    <label for="situation2">En recherche d'emploi</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="situation3" name="current_situation" value="Étudiant(e)">
+                    <label for="situation3">Étudiant(e)</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="situation4" name="current_situation" value="Freelance / Indépendant">
+                    <label for="situation4">Freelance / Indépendant</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="situation5" name="current_situation" value="Autre">
+                    <label for="situation5">Autre (préciser)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Type de contrat recherché (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract1" name="contract_types" value="CDI">
+                    <label for="contract1">CDI</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract2" name="contract_types" value="CDD">
+                    <label for="contract2">CDD</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract3" name="contract_types" value="Freelance / Indépendant">
+                    <label for="contract3">Freelance / Indépendant</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract4" name="contract_types" value="Temps plein">
+                    <label for="contract4">Temps plein</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract5" name="contract_types" value="Temps partiel">
+                    <label for="contract5">Temps partiel</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract6" name="contract_types" value="Mission ponctuelle">
+                    <label for="contract6">Mission ponctuelle</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="contract7" name="contract_types" value="Stage / Alternance">
+                    <label for="contract7">Stage / Alternance</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Disponibilité pour démarrer</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="avail1" name="availability" value="Immédiate" required>
+                    <label for="avail1">Immédiate</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="avail2" name="availability" value="Sous 1 semaine">
+                    <label for="avail2">Sous 1 semaine</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="avail3" name="availability" value="Sous 2 semaines">
+                    <label for="avail3">Sous 2 semaines</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="avail4" name="availability" value="Sous 1 mois">
+                    <label for="avail4">Sous 1 mois</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="avail5" name="availability" value="Plus tard">
+                    <label for="avail5">Plus tard (préciser)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" id="availability_details_group" style="display: none;">
+            <label for="availability_details" class="form-label">Précisez votre date ou délai estimé</label>
+            <input type="text" id="availability_details" name="availability_details" class="form-input" placeholder="Ex: Disponible à partir du 15 janvier">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Êtes-vous flexible pour un temps plein ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="flex1" name="full_time_flexibility" value="Oui, totalement flexible pour un temps plein" required>
+                    <label for="flex1">Oui, totalement flexible pour un temps plein</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="flex2" name="full_time_flexibility" value="Oui, mais sous conditions">
+                    <label for="flex2">Oui, mais sous conditions (préciser)</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="flex3" name="full_time_flexibility" value="Non, je préfère rester en temps partiel">
+                    <label for="flex3">Non, je préfère rester en temps partiel</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" id="flexibility_conditions_group" style="display: none;">
+            <label for="full_time_conditions" class="form-label">Précisez vos contraintes</label>
+            <textarea id="full_time_conditions" name="full_time_conditions" class="form-textarea" placeholder="Décrivez vos contraintes..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Volume horaire souhaité par semaine</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="hours1" name="weekly_hours" value="Moins de 20h" required>
+                    <label for="hours1">Moins de 20h</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="hours2" name="weekly_hours" value="20–30h">
+                    <label for="hours2">20–30h</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="hours3" name="weekly_hours" value="30–35h">
+                    <label for="hours3">30–35h</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="hours4" name="weekly_hours" value="35–40h">
+                    <label for="hours4">35–40h</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="hours5" name="weekly_hours" value="Plus de 40h">
+                    <label for="hours5">Plus de 40h</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Disponibilités par tranches horaires (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time1" name="time_slots" value="06h–09h">
+                    <label for="time1">06h–09h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time2" name="time_slots" value="09h–12h">
+                    <label for="time2">09h–12h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time3" name="time_slots" value="12h–15h">
+                    <label for="time3">12h–15h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time4" name="time_slots" value="15h–18h">
+                    <label for="time4">15h–18h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time5" name="time_slots" value="18h–21h">
+                    <label for="time5">18h–21h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time6" name="time_slots" value="21h–00h">
+                    <label for="time6">21h–00h</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time7" name="time_slots" value="00h–06h">
+                    <label for="time7">00h–06h</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Disponibilités par jour de la semaine (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day1" name="week_days" value="Lundi">
+                    <label for="day1">Lundi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day2" name="week_days" value="Mardi">
+                    <label for="day2">Mardi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day3" name="week_days" value="Mercredi">
+                    <label for="day3">Mercredi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day4" name="week_days" value="Jeudi">
+                    <label for="day4">Jeudi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day5" name="week_days" value="Vendredi">
+                    <label for="day5">Vendredi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day6" name="week_days" value="Samedi">
+                    <label for="day6">Samedi</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day7" name="week_days" value="Dimanche">
+                    <label for="day7">Dimanche</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="day8" name="week_days" value="Variable selon planning">
+                    <label for="day8">Variable selon planning (préciser)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Préférence de mode de travail</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="work1" name="work_mode" value="Télétravail 100 %" required>
+                    <label for="work1">Télétravail 100 %</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="work2" name="work_mode" value="Hybride">
+                    <label for="work2">Hybride (mix bureau & télétravail)</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="work3" name="work_mode" value="Présentiel uniquement">
+                    <label for="work3">Présentiel uniquement</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="work4" name="work_mode" value="Peu importe">
+                    <label for="work4">Peu importe</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="personal_constraints" class="form-label">Contrainte personnelle importante à signaler ? (optionnel)</label>
+            <textarea id="personal_constraints" name="personal_constraints" class="form-textarea" placeholder="Ex: autre emploi, études, garde d'enfants, déplacements..."></textarea>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 3: Langues -->
+    <div class="form-section" data-section="3">
+        <div class="section-header">
+            <div class="section-number">Section 3 / 13</div>
+            <h2 class="section-title">Langues</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Langues maîtrisées (niveau professionnel ou courant)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang1" name="languages" value="Français">
+                    <label for="lang1">Français</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang2" name="languages" value="Anglais">
+                    <label for="lang2">Anglais</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang3" name="languages" value="Allemand">
+                    <label for="lang3">Allemand</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang4" name="languages" value="Espagnol">
+                    <label for="lang4">Espagnol</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang5" name="languages" value="Italien">
+                    <label for="lang5">Italien</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang6" name="languages" value="Portugais">
+                    <label for="lang6">Portugais</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang7" name="languages" value="Néerlandais">
+                    <label for="lang7">Néerlandais</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 4: Poste(s) Visé(s) -->
+    <div class="form-section" data-section="4">
+        <div class="section-header">
+            <div class="section-number">Section 4 / 13</div>
+            <h2 class="section-title">Poste(s) Visé(s)</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Poste(s) que vous visez chez nous ? (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos1" name="target_positions" value="Agent call center / Service client">
+                    <label for="pos1">Agent call center / Service client</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos2" name="target_positions" value="Télévendeur / Commercial téléphonique / Closer">
+                    <label for="pos2">Télévendeur / Commercial téléphonique / Closer</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos3" name="target_positions" value="Prise de rendez-vous">
+                    <label for="pos3">Prise de rendez-vous</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos4" name="target_positions" value="Superviseur / Team Leader">
+                    <label for="pos4">Superviseur / Team Leader</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos5" name="target_positions" value="Formateur / Coach">
+                    <label for="pos5">Formateur / Coach</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos6" name="target_positions" value="Qualité (écoute & scoring d'appels)">
+                    <label for="pos6">Qualité (écoute & scoring d'appels)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pos7" name="target_positions" value="Back-office / Support administratif">
+                    <label for="pos7">Back-office / Support administratif</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="priority_position" class="form-label required">Poste souhaité en priorité</label>
+            <select id="priority_position" name="priority_position" class="form-select" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Agent call center / Service client">Agent call center / Service client</option>
+                <option value="Télévendeur / Commercial téléphonique / Closer">Télévendeur / Commercial téléphonique / Closer</option>
+                <option value="Prise de rendez-vous">Prise de rendez-vous</option>
+                <option value="Superviseur / Team Leader">Superviseur / Team Leader</option>
+                <option value="Formateur / Coach">Formateur / Coach</option>
+                <option value="Qualité (écoute & scoring d'appels)">Qualité (écoute & scoring d'appels)</option>
+                <option value="Back-office / Support administratif">Back-office / Support administratif</option>
+            </select>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 5: Expérience en Call Center -->
+    <div class="form-section" data-section="5">
+        <div class="section-header">
+            <div class="section-number">Section 5 / 13</div>
+            <h2 class="section-title">Expérience en Call Center / Vente</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Avez-vous déjà travaillé en call center ou en télévente ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="exp1" name="has_call_center_experience" value="Oui" required>
+                    <label for="exp1">Oui</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="exp2" name="has_call_center_experience" value="Non">
+                    <label for="exp2">Non</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 6: Expériences Détaillées -->
+    <div class="form-section" data-section="6">
+        <div class="section-header">
+            <div class="section-number">Section 6 / 13</div>
+            <h2 class="section-title">Expériences Détaillées</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Décrivez vos expériences professionnelles en détail (surtout celles liées au call center)</label>
+            <div id="experiencesContainer"></div>
+            <button type="button" class="add-btn" onclick="addExperience()">➕ Ajouter une expérience</button>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 7: Performance & KPIs -->
+    <div class="form-section" data-section="7">
+        <div class="section-header">
+            <div class="section-number">Section 7 / 13</div>
+            <h2 class="section-title">Performance & KPIs</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Avez-vous déjà travaillé avec des objectifs et des KPIs chiffrés ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="kpi1" name="worked_with_kpis" value="Oui, tout le temps" required>
+                    <label for="kpi1">Oui, tout le temps</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="kpi2" name="worked_with_kpis" value="Oui, parfois">
+                    <label for="kpi2">Oui, parfois</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="kpi3" name="worked_with_kpis" value="Non">
+                    <label for="kpi3">Non</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Avez-vous déjà été parmi les meilleurs agents / vendeurs ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="top1" name="top_performer" value="Oui, régulièrement">
+                    <label for="top1">Oui, régulièrement</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="top2" name="top_performer" value="Oui, parfois">
+                    <label for="top2">Oui, parfois</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="top3" name="top_performer" value="Non">
+                    <label for="top3">Non</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="achievement_story" class="form-label">Décrivez un moment où vous avez dépassé vos objectifs (optionnel)</label>
+            <textarea id="achievement_story" name="achievement_story" class="form-textarea" placeholder="Racontez une réussite dont vous êtes fier(e)..."></textarea>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 8: Matériel & Conditions -->
+    <div class="form-section" data-section="8">
+        <div class="section-header">
+            <div class="section-number">Section 8 / 13</div>
+            <h2 class="section-title">Matériel & Conditions de Travail</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Matériel que vous utilisez actuellement (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip1" name="equipment_types" value="Ordinateur fixe">
+                    <label for="equip1">Ordinateur fixe</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip2" name="equipment_types" value="Ordinateur portable">
+                    <label for="equip2">Ordinateur portable</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip3" name="equipment_types" value="Aucun pour l'instant">
+                    <label for="equip3">Aucun pour l'instant</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Système d'exploitation principal</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="os1" name="operating_system" value="Windows" required>
+                    <label for="os1">Windows</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="os2" name="operating_system" value="MacOS">
+                    <label for="os2">MacOS</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="os3" name="operating_system" value="Linux">
+                    <label for="os3">Linux</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Disposez-vous d'un casque avec micro de bonne qualité ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="headset1" name="has_headset" value="Oui" required>
+                    <label for="headset1">Oui</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="headset2" name="has_headset" value="Non, mais prêt(e) à en acheter si nécessaire">
+                    <label for="headset2">Non, mais prêt(e) à en acheter si nécessaire</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="headset3" name="has_headset" value="Non, et pas possible pour l'instant">
+                    <label for="headset3">Non, et pas possible pour l'instant</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Type de connexion internet principale</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="inet1" name="internet_connection_type" value="Fibre" required>
+                    <label for="inet1">Fibre</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="inet2" name="internet_connection_type" value="ADSL / VDSL">
+                    <label for="inet2">ADSL / VDSL</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="inet3" name="internet_connection_type" value="4G">
+                    <label for="inet3">4G</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="inet4" name="internet_connection_type" value="5G">
+                    <label for="inet4">5G</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="speedtest_result" class="form-label">Résultat de votre test de connexion (Speedtest)</label>
+            <input type="text" id="speedtest_result" name="speedtest_result" class="form-input" placeholder="Ex: Download: 50 Mbps, Upload: 10 Mbps, Ping: 20ms, Date: 28/11/2025">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Lieu de travail principal</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="workspace1" name="workspace_type" value="Pièce dédiée au calme" required>
+                    <label for="workspace1">Pièce dédiée au calme</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="workspace2" name="workspace_type" value="Salon ou pièce partagée">
+                    <label for="workspace2">Salon ou pièce partagée</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="workspace3" name="workspace_type" value="Espaces publics (coworking, café, etc.)">
+                    <label for="workspace3">Espaces publics (coworking, café, etc.)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Êtes-vous d'accord pour travailler avec (plusieurs réponses possibles) :</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="agree1" name="work_agreements" value="Scripts d'appels fournis">
+                    <label for="agree1">Scripts d'appels fournis</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="agree2" name="work_agreements" value="Outils de suivi du temps de travail">
+                    <label for="agree2">Outils de suivi du temps de travail</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="agree3" name="work_agreements" value="Enregistrement d'appels pour la qualité">
+                    <label for="agree3">Enregistrement d'appels pour la qualité</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="agree4" name="work_agreements" value="Reporting régulier">
+                    <label for="agree4">Reporting régulier</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 9: Rémunération -->
+    <div class="form-section" data-section="9">
+        <div class="section-header">
+            <div class="section-number">Section 9 / 13</div>
+            <h2 class="section-title">Rémunération (en DT)</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Modes de rémunération que vous acceptez (plusieurs réponses possibles)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pay1" name="payment_modes_accepted" value="Salaire fixe">
+                    <label for="pay1">Salaire fixe</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pay2" name="payment_modes_accepted" value="Fixe + primes sur résultats">
+                    <label for="pay2">Fixe + primes sur résultats</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pay3" name="payment_modes_accepted" value="Rémunération uniquement à la performance">
+                    <label for="pay3">Rémunération uniquement à la performance</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pay4" name="payment_modes_accepted" value="Facturation en freelance (au jour / au projet)">
+                    <label for="pay4">Facturation en freelance (au jour / au projet)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="preferred_payment_mode" class="form-label required">Mode de rémunération préféré</label>
+            <select id="preferred_payment_mode" name="preferred_payment_mode" class="form-select" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Salaire fixe">Salaire fixe</option>
+                <option value="Fixe + primes sur résultats">Fixe + primes sur résultats</option>
+                <option value="Rémunération uniquement à la performance">Rémunération uniquement à la performance</option>
+                <option value="Facturation en freelance (au jour / au projet)">Facturation en freelance (au jour / au projet)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="salary_expectations" class="form-label required">Prétentions salariales (en DT)</label>
+            <input type="text" id="salary_expectations" name="salary_expectations" class="form-input" placeholder="Ex: 1500 DT / mois ou 40 DT / heure" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Accepteriez-vous une partie variable liée à vos performances ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="var1" name="accept_variable_compensation" value="Oui" required>
+                    <label for="var1">Oui</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="var2" name="accept_variable_compensation" value="Non">
+                    <label for="var2">Non</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="var3" name="accept_variable_compensation" value="À discuter">
+                    <label for="var3">À discuter</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 10: Mindset & Soft Skills -->
+    <div class="form-section" data-section="10">
+        <div class="section-header">
+            <div class="section-number">Section 10 / 13</div>
+            <h2 class="section-title">Mindset & Soft Skills</h2>
+        </div>
+
+        <div class="form-group">
+            <label for="difficult_client_response" class="form-label required">Décrivez comment vous réagissez face à un client difficile ou mécontent</label>
+            <textarea id="difficult_client_response" name="difficult_client_response" class="form-textarea" placeholder="Expliquez votre approche face à une situation difficile..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Dans quel type de cadre préférez-vous travailler ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="frame1" name="preferred_work_environment" value="Un cadre très structuré (scripts, procédures, règles claires)" required>
+                    <label for="frame1">Un cadre très structuré (scripts, procédures, règles claires)</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="frame2" name="preferred_work_environment" value="Un cadre plus libre avec autonomie">
+                    <label for="frame2">Un cadre plus libre avec autonomie</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="frame3" name="preferred_work_environment" value="Un équilibre entre les deux">
+                    <label for="frame3">Un équilibre entre les deux</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="three_qualities" class="form-label required">Citez 3 qualités qui font de vous un(e) bon(ne) agent(e) de call center</label>
+            <textarea id="three_qualities" name="three_qualities" class="form-textarea" placeholder="Ex: Patience, écoute active, résolution de problèmes..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="three_improvements" class="form-label required">Citez 3 points sur lesquels vous aimeriez vous améliorer</label>
+            <textarea id="three_improvements" name="three_improvements" class="form-textarea" placeholder="Soyez honnête, cela montre votre capacité d'introspection..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label required">Avez-vous déjà coaché ou formé un(e) collègue (même de manière informelle) ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="coach1" name="has_coached_colleague" value="Oui" required>
+                    <label for="coach1">Oui</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="coach2" name="has_coached_colleague" value="Non">
+                    <label for="coach2">Non</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 11: Supervision (Optional) -->
+    <div class="form-section" data-section="11">
+        <div class="section-header">
+            <div class="section-number">Section 11 / 13</div>
+            <h2 class="section-title">Expérience de Supervision (Optionnel)</h2>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Avez-vous déjà supervisé ou managé une équipe ?</label>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="super1" name="supervisor_experience" value="Oui">
+                    <label for="super1">Oui</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="super2" name="supervisor_experience" value="Non">
+                    <label for="super2">Non</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" id="supervision_details" style="display: none;">
+            <label for="team_size_managed" class="form-label">Taille de l'équipe gérée</label>
+            <input type="text" id="team_size_managed" name="team_size_managed" class="form-input" placeholder="Ex: 5-10 agents">
+
+            <label for="management_style" class="form-label" style="margin-top: 1rem;">Décrivez votre style de management</label>
+            <textarea id="management_style" name="management_style" class="form-textarea" placeholder="Comment managez-vous votre équipe ?"></textarea>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 12: Audio Recording -->
+    <div class="form-section" data-section="12">
+        <div class="section-header">
+            <div class="section-number">Section 12 / 13</div>
+            <h2 class="section-title">Enregistrement Vocal</h2>
+        </div>
+
+        <div class="form-group">
+            <div id="audioRecorder">
+                <h3 style="color: #2563eb; margin-bottom: 1rem;">Instructions</h3>
+                <p style="color: #475569; margin-bottom: 1.5rem;">
+                    Enregistrez-vous en répondant à la question suivante (durée recommandée : 1-2 minutes) :<br><br>
+                    <strong>"Pourquoi souhaitez-vous travailler dans un call center et qu'est-ce qui vous motive au quotidien ?"</strong>
+                </p>
+
+                <h4 style="color: #1e293b; margin-bottom: 1rem;">Enregistrer directement</h4>
+                <button type="button" class="record-btn" id="recordBtn" onclick="toggleRecording()">
+                    🎤 Démarrer l'enregistrement
+                </button>
+                <div id="recordingStatus" style="color: #64748b; margin-top: 1rem;"></div>
+
+                <p style="margin: 2rem 0; color: #94a3b8;">ou</p>
+
+                <h4 style="color: #1e293b; margin-bottom: 1rem;">Uploader un fichier audio</h4>
+                <input type="file" id="audio_recording" name="audio_recording" class="form-input" accept=".mp3,.wav,.webm,.ogg,.m4a">
+                <small style="color: #64748b; font-size: 0.875rem;">Formats acceptés : MP3, WAV, WebM, OGG, M4A (max 10 MB)</small>
+
+                <div class="alert alert-error" style="margin-top: 1.5rem;">
+                    ⚠️ Important : L'enregistrement vocal est obligatoire pour valider votre candidature. Assurez-vous d'être dans un environnement calme pour un enregistrement de qualité.
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- Section 13: WhatsApp Interview -->
+    <div class="form-section" data-section="13">
+        <div class="section-header">
+            <div class="section-number">Section 13 / 13</div>
+            <h2 class="section-title">Entretien WhatsApp</h2>
+        </div>
+
+        <p style="color: #475569; margin-bottom: 1.5rem;">
+            Prochaine étape : Nous vous contacterons sur WhatsApp pour un court entretien de validation.
+            Assurez-vous que votre numéro WhatsApp est actif et que vous pouvez recevoir des messages.
+        </p>
+
+        <div class="form-group">
+            <label for="whatsapp_number" class="form-label required">Numéro WhatsApp</label>
+            <input type="tel" id="whatsapp_number" name="whatsapp_number" class="form-input" placeholder="+216 XX XXX XXX" required>
+            <small style="color: #64748b; font-size: 0.875rem;">
+                Format international recommandé (ex: +216 pour la Tunisie)<br>
+                Si votre numéro WhatsApp est différent de votre numéro de téléphone principal, veuillez indiquer celui que vous utilisez sur WhatsApp.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="interview_availability" class="form-label required">Vos disponibilités pour un entretien WhatsApp</label>
+            <textarea id="interview_availability" name="interview_availability" class="form-textarea" placeholder="Ex: Du lundi au vendredi de 9h à 18h, ou le samedi matin..." required></textarea>
+            <small style="color: #64748b; font-size: 0.875rem;">
+                Indiquez vos créneaux de disponibilité pour que nous puissions vous contacter au meilleur moment
+            </small>
+        </div>
+
+        <div class="final-checklist">
+            <h3 style="color: #15803d; margin-bottom: 1rem;">🎉 Dernière étape !</h3>
+            <p style="color: #166534; margin-bottom: 1rem;">
+                Vous êtes sur le point de soumettre votre candidature. Avant de valider, assurez-vous que :
+            </p>
+            <div class="checklist-item">
+                ✓ Toutes les informations sont correctes et complètes
+            </div>
+            <div class="checklist-item">
+                ✓ Votre CV a été uploadé
+            </div>
+            <div class="checklist-item">
+                ✓ Votre enregistrement vocal est de bonne qualité
+            </div>
+            <div class="checklist-item">
+                ✓ Votre numéro WhatsApp est actif et correct
+            </div>
+            <p style="color: #166534; margin-top: 1rem; font-size: 0.875rem;">
+                Une fois validée, notre équipe examinera votre dossier et vous contactera dans les plus brefs délais.
+            </p>
+            <p style="color: #166534; margin-top: 1rem; font-size: 0.875rem; background: white; padding: 0.75rem; border-radius: 6px;">
+                <strong>Note importante :</strong> L'entretien WhatsApp dure généralement entre 10 et 15 minutes.
+                Il s'agit d'un échange informel pour mieux vous connaître et répondre à vos questions.
+            </p>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
+            <button type="submit" class="btn btn-primary" style="font-size: 1.125rem; padding: 1rem 2rem;">
+                ✅ Soumettre ma candidature
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+let currentSection = 1;
+const totalSections = 13;
+let mediaRecorder = null;
+let audioChunks = [];
+
+function updateProgress() {
+    const progress = (currentSection / totalSections) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function showSection(sectionNumber) {
+    document.querySelectorAll('.form-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.querySelector(`[data-section="${sectionNumber}"]`).classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+function validateSection(sectionNumber) {
+    const section = document.querySelector(`[data-section="${sectionNumber}"]`);
+    const requiredInputs = section.querySelectorAll('input[required], select[required], textarea[required]');
+    const errors = [];
+
+    // Validate regular inputs
+    requiredInputs.forEach(input => {
+        if (input.type === 'radio') {
+            const radioGroup = section.querySelectorAll(`input[name="${input.name}"]`);
+            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+            if (!isChecked) {
+                errors.push(`Veuillez sélectionner une option pour "${input.closest('.form-group')?.querySelector('.form-label')?.textContent || 'ce champ'}"`);
+            }
+        } else if (input.type === 'checkbox') {
+            // Skip individual checkbox validation - handled separately below
+        } else if (!input.value.trim()) {
+            const label = input.closest('.form-group')?.querySelector('.form-label')?.textContent || 'Ce champ';
+            errors.push(`${label} est requis`);
+        }
+    });
+
+    // Validate checkbox groups (at least one must be checked)
+    const checkboxGroups = {};
+    section.querySelectorAll('.checkbox-group').forEach(group => {
+        const groupLabel = group.previousElementSibling?.textContent || 'Cette section';
+        const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+        const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+        if (checkboxes.length > 0) {
+            const firstCheckboxName = checkboxes[0].name;
+            if (!checkboxGroups[firstCheckboxName]) {
+                checkboxGroups[firstCheckboxName] = { hasChecked, label: groupLabel };
+            }
+        }
+    });
+
+    // Check if any checkbox group is required and empty
+    for (const [name, data] of Object.entries(checkboxGroups)) {
+        if (!data.hasChecked && data.label.includes('*')) {
+            errors.push(`Veuillez sélectionner au moins une option pour "${data.label.replace('*', '').trim()}"`);
+        }
+    }
+
+    // Section-specific validations
+    if (sectionNumber === 2) {
+        // Contract types
+        const contractTypes = section.querySelectorAll('input[name="contract_types"]:checked');
+        if (contractTypes.length === 0) {
+            errors.push('Veuillez sélectionner au moins un type de contrat');
+        }
+
+        // Time slots
+        const timeSlots = section.querySelectorAll('input[name="time_slots"]:checked');
+        if (timeSlots.length === 0) {
+            errors.push('Veuillez sélectionner au moins une tranche horaire');
+        }
+
+        // Week days
+        const weekDays = section.querySelectorAll('input[name="week_days"]:checked');
+        if (weekDays.length === 0) {
+            errors.push('Veuillez sélectionner au moins un jour de disponibilité');
+        }
+    }
+
+    if (sectionNumber === 3) {
+        // Languages
+        const languages = section.querySelectorAll('input[name="languages"]:checked');
+        if (languages.length === 0) {
+            errors.push('Veuillez sélectionner au moins une langue');
+        }
+    }
+
+    if (sectionNumber === 4) {
+        // Target positions
+        const positions = section.querySelectorAll('input[name="target_positions"]:checked');
+        if (positions.length === 0) {
+            errors.push('Veuillez sélectionner au moins un poste visé');
+        }
+    }
+
+    if (sectionNumber === 8) {
+        // Equipment
+        const equipment = section.querySelectorAll('input[name="equipment_types"]:checked');
+        if (equipment.length === 0) {
+            errors.push('Veuillez sélectionner au moins un type de matériel');
+        }
+
+        // Work agreements
+        const agreements = section.querySelectorAll('input[name="work_agreements"]:checked');
+        if (agreements.length === 0) {
+            errors.push('Veuillez accepter au moins une condition de travail');
+        }
+    }
+
+    if (sectionNumber === 9) {
+        // Payment modes
+        const paymentModes = section.querySelectorAll('input[name="payment_modes_accepted"]:checked');
+        if (paymentModes.length === 0) {
+            errors.push('Veuillez sélectionner au moins un mode de rémunération accepté');
+        }
+    }
+
+    // Display errors
+    if (errors.length > 0) {
+        alert('Veuillez corriger les erreurs suivantes :\n\n' + errors.join('\n'));
+        return false;
+    }
+
+    return true;
+}
+
+function nextSection() {
+    if (validateSection(currentSection)) {
+        if (currentSection < totalSections) {
+            currentSection++;
+            showSection(currentSection);
+            updateProgress();
+        }
+    }
+}
+
+function prevSection() {
+    if (currentSection > 1) {
+        currentSection--;
+        showSection(currentSection);
+        updateProgress();
+    }
+}
+
+// Conditional field displays
+document.addEventListener('DOMContentLoaded', function() {
+    // Availability details
+    document.querySelectorAll('input[name="availability"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const detailsGroup = document.getElementById('availability_details_group');
+            detailsGroup.style.display = this.value === 'Plus tard' ? 'block' : 'none';
+        });
+    });
+
+    // Full-time flexibility conditions
+    document.querySelectorAll('input[name="full_time_flexibility"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const conditionsGroup = document.getElementById('flexibility_conditions_group');
+            conditionsGroup.style.display = this.value === 'Oui, mais sous conditions' ? 'block' : 'none';
+        });
+    });
+
+    // Supervision details
+    document.querySelectorAll('input[name="supervisor_experience"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const detailsGroup = document.getElementById('supervision_details');
+            detailsGroup.style.display = this.value === 'Oui' ? 'block' : 'none';
+        });
+    });
+});
+
+// Experience management
+let experienceCount = 0;
+
+function addExperience() {
+    experienceCount++;
+    const container = document.getElementById('experiencesContainer');
+    const expDiv = document.createElement('div');
+    expDiv.className = 'experience-item';
+    expDiv.innerHTML = `
+        <h4 style="color: #2563eb; margin-bottom: 1rem;">Expérience #${experienceCount}</h4>
+        <div class="form-group">
+            <label class="form-label">Poste occupé</label>
+            <input type="text" name="exp_position_${experienceCount}" class="form-input" placeholder="Ex: Agent call center">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Entreprise</label>
+            <input type="text" name="exp_company_${experienceCount}" class="form-input" placeholder="Nom de l'entreprise">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Durée</label>
+            <input type="text" name="exp_duration_${experienceCount}" class="form-input" placeholder="Ex: Jan 2020 - Déc 2022">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea name="exp_description_${experienceCount}" class="form-textarea" placeholder="Décrivez vos missions et réalisations..."></textarea>
+        </div>
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">🗑️ Supprimer</button>
+    `;
+    container.appendChild(expDiv);
+}
+
+// Audio recording
+function toggleRecording() {
+    const btn = document.getElementById('recordBtn');
+    const status = document.getElementById('recordingStatus');
+
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.addEventListener('dataavailable', event => {
+                    audioChunks.push(event.data);
+                });
+
+                mediaRecorder.addEventListener('stop', () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+
+                    // Create audio element for playback
+                    const audioElement = document.createElement('audio');
+                    audioElement.src = audioUrl;
+                    audioElement.controls = true;
+                    audioElement.style.marginTop = '1rem';
+
+                    const container = document.getElementById('audioRecorder');
+                    const existing = container.querySelector('audio');
+                    if (existing) existing.remove();
+                    container.appendChild(audioElement);
+
+                    // Convert to File and set to input
+                    const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    document.getElementById('audio_recording').files = dataTransfer.files;
+
+                    status.textContent = '✅ Enregistrement terminé et sauvegardé';
+                    status.style.color = '#10b981';
+                });
+
+                mediaRecorder.start();
+                btn.textContent = '⏹️ Arrêter l\'enregistrement';
+                btn.classList.add('recording');
+                status.textContent = '🔴 Enregistrement en cours...';
+                status.style.color = '#ef4444';
+            })
+            .catch(err => {
+                status.textContent = '❌ Erreur: Microphone non accessible';
+                status.style.color = '#ef4444';
+            });
+    } else {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        btn.textContent = '🎤 Démarrer l\'enregistrement';
+        btn.classList.remove('recording');
+    }
+}
+
+// Form submission handler
+document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    // Collect experiences into JSON
+    const experiences = [];
+    for (let i = 1; i <= experienceCount; i++) {
+        const position = document.querySelector(`[name="exp_position_${i}"]`)?.value;
+        const company = document.querySelector(`[name="exp_company_${i}"]`)?.value;
+        const duration = document.querySelector(`[name="exp_duration_${i}"]`)?.value;
+        const description = document.querySelector(`[name="exp_description_${i}"]`)?.value;
+
+        if (position || company) {
+            experiences.push({ position, company, duration, description });
+        }
+    }
+
+    // Add hidden field for experiences
+    if (experiences.length > 0) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'experiences_json';
+        input.value = JSON.stringify(experiences);
+        this.appendChild(input);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source env/Scripts/activate)",
+      "Bash(python manage.py migrate:*)",
+      "Bash(python manage.py startapp:*)",
+      "Bash(python manage.py makemigrations:*)",
+      "Bash(python manage.py runserver:*)",
+      "Bash(python manage.py:*)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

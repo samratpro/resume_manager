@@ -1,0 +1,89 @@
+{% extends 'resumemanager/base.html' %}
+
+{% block title %}Candidature envoyée - CALL CENTER TN{% endblock %}
+
+{% block header_subtitle %}Confirmation{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 2rem 0;">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+    <h2 style="color: #10b981; font-size: 2rem; margin-bottom: 1rem;">
+        Candidature envoyée avec succès !
+    </h2>
+    <p style="color: #64748b; font-size: 1.125rem; margin-bottom: 2rem;">
+        Merci pour votre candidature ! Nous avons bien reçu votre dossier complet.
+    </p>
+
+    <div style="background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <h3 style="color: #15803d; margin-bottom: 1.5rem; font-size: 1.25rem;">Prochaines étapes</h3>
+
+        <div style="text-align: left; margin-bottom: 1.5rem;">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: start;">
+                <div style="background: #10b981; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">1</div>
+                <div>
+                    <h4 style="color: #166534; margin-bottom: 0.25rem;">Examen de votre dossier</h4>
+                    <p style="color: #166534; font-size: 0.875rem; margin: 0;">Notre équipe de recrutement va analyser votre candidature dans les 24-48h</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: start;">
+                <div style="background: #10b981; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">2</div>
+                <div>
+                    <h4 style="color: #166534; margin-bottom: 0.25rem;">Contact WhatsApp</h4>
+                    <p style="color: #166534; font-size: 0.875rem; margin: 0;">Si votre profil correspond, nous vous contacterons via WhatsApp pour un entretien rapide</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: start;">
+                <div style="background: #10b981; color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600;">3</div>
+                <div>
+                    <h4 style="color: #166534; margin-bottom: 0.25rem;">Décision finale</h4>
+                    <p style="color: #166534; font-size: 0.875rem; margin: 0;">Vous recevrez une réponse définitive par email ou WhatsApp dans les 7 jours</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: rgba(37, 99, 235, 0.05); border: 2px solid rgba(37, 99, 235, 0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <h3 style="color: #2563eb; margin-bottom: 1rem; font-size: 1.125rem;">💡 Conseils importants</h3>
+
+        <div style="text-align: left; color: #475569; font-size: 0.875rem;">
+            <p style="margin-bottom: 0.75rem;">
+                <strong style="color: #1e293b;">📱 WhatsApp actif</strong><br>
+                Assurez-vous que votre numéro WhatsApp est actif pour ne pas manquer notre appel
+            </p>
+            <p style="margin-bottom: 0.75rem;">
+                <strong style="color: #1e293b;">📧 Vérifiez vos emails</strong><br>
+                Consultez régulièrement votre boîte mail (et les spams)
+            </p>
+            <p style="margin: 0;">
+                <strong style="color: #1e293b;">⏱️ Délai de réponse</strong><br>
+                Nous nous engageons à vous répondre dans un délai de 7 jours maximum
+            </p>
+        </div>
+    </div>
+
+    <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <p style="color: #64748b; font-size: 0.875rem; margin: 0;">
+            Si votre profil n'est pas retenu pour cette fois, nous conservons votre candidature pour de futures opportunités.
+        </p>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-primary" style="text-decoration: none; display: inline-block; margin-bottom: 2rem;">
+        Retour à l'accueil
+    </a>
+
+    <div style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 8px; padding: 1rem; max-width: 500px; margin: 0 auto 2rem;">
+        <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem;">
+            Numéro de référence : {{ reference }}
+        </p>
+        <p style="color: #92400e; margin: 0.5rem 0 0 0; font-size: 0.875rem;">
+            Conservez ce numéro pour tout suivi de votre candidature
+        </p>
+    </div>
+
+    <p style="color: #94a3b8; font-size: 0.875rem;">
+        Une question ? Contactez-nous à <strong>recrutement@callcentertn.com</strong>
+    </p>
+</div>
+{% endblock %}
