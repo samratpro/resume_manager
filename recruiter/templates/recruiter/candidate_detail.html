@@ -19,9 +19,9 @@
         }
 
         .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            
             padding: 1rem 0;
         }
 
@@ -37,6 +37,7 @@
         .navbar h1 {
             font-size: 1.5rem;
             font-weight: 600;
+            color: #1e293b;
         }
 
         .navbar-links {
@@ -46,7 +47,7 @@
         }
 
         .navbar-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: #64748b;
             text-decoration: none;
             font-size: 0.95rem;
             transition: color 0.2s;
@@ -75,9 +76,9 @@
         }
 
         .candidate-header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
             border-radius: 1rem;
             padding: 2rem;
             margin-bottom: 2rem;
@@ -86,12 +87,19 @@
         .candidate-header h2 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-weight: 700;
         }
 
         .candidate-header .reference {
-            color: #14b8a6;
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
+            display: inline-block;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .candidate-meta {
@@ -103,19 +111,20 @@
 
         .candidate-meta div {
             padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
             border-radius: 0.5rem;
         }
 
         .candidate-meta .label {
             font-size: 0.875rem;
-            color: #9ca3af;
+            color: #64748b;
             margin-bottom: 0.25rem;
         }
 
         .candidate-meta .value {
             font-size: 1rem;
-            color: white;
+            color: #1e293b;
+            font-weight: 500;
         }
 
         .grid-2col {
@@ -125,9 +134,9 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
             border-radius: 1rem;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
@@ -135,8 +144,11 @@
 
         .card h3 {
             font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: #14b8a6;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            font-weight: 700;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .info-group {
@@ -145,13 +157,14 @@
 
         .info-group .label {
             font-size: 0.875rem;
-            color: #9ca3af;
+            color: #64748b;
             margin-bottom: 0.25rem;
         }
 
         .info-group .value {
             font-size: 1rem;
-            color: white;
+            color: #1e293b;
+            line-height: 1.6;
         }
 
         .status-badge {
@@ -159,6 +172,7 @@
             border-radius: 0.5rem;
             font-size: 1rem;
             font-weight: 600;
+            color: #1e293b;
             display: inline-block;
         }
 
@@ -168,7 +182,7 @@
         .status-interview { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
         .status-hired { background: rgba(34, 197, 94, 0.2); color: #86efac; }
         .status-rejected { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-        .status-archived { background: rgba(156, 163, 175, 0.2); color: #d1d5db; }
+        .status-archived { background: rgba(156, 163, 175, 0.2); color: #64748b; }
 
         .form-group {
             margin-bottom: 1rem;
@@ -177,7 +191,7 @@
         .form-group label {
             display: block;
             font-size: 0.875rem;
-            color: #d1d5db;
+            color: #64748b;
             margin-bottom: 0.5rem;
         }
 
@@ -186,10 +200,10 @@
         .form-group textarea {
             width: 100%;
             padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            color: white;
+            color: #1e293b;
             font-size: 0.95rem;
         }
 
@@ -198,10 +212,13 @@
         .form-group textarea:focus {
             outline: none;
             border-color: #14b8a6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
         }
 
         .form-group option {
-            background: #1e293b;
+            background: white;
+            color: #1e293b;
         }
 
         .btn {
@@ -244,7 +261,7 @@
         }
 
         .comment {
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
             border-radius: 0.5rem;
             padding: 1rem;
             margin-bottom: 1rem;
@@ -258,22 +275,23 @@
 
         .comment-author {
             font-weight: 600;
+            color: #1e293b;
             color: #14b8a6;
         }
 
         .comment-date {
             font-size: 0.875rem;
-            color: #9ca3af;
+            color: #64748b;
         }
 
         .comment-content {
-            color: #e5e7eb;
+            color: #1e293b;
             line-height: 1.6;
         }
 
         .history-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #14b8a6;
+            background: #f8fafc;
+            border-left: 4px solid #14b8a6;
             padding: 1rem;
             margin-bottom: 1rem;
             border-radius: 0.5rem;
@@ -287,16 +305,17 @@
 
         .history-change {
             font-weight: 600;
+            color: #1e293b;
         }
 
         .history-date {
             font-size: 0.875rem;
-            color: #9ca3af;
+            color: #64748b;
         }
 
         .history-user {
             font-size: 0.875rem;
-            color: #9ca3af;
+            color: #64748b;
         }
 
         .file-link {
@@ -323,17 +342,18 @@
             width: 100%;
             text-align: left;
             padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            color: white;
+            color: #1e293b;
             margin-bottom: 0.5rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .template-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: white;
+            border-color: #14b8a6;
         }
 
         .score-display {
@@ -354,7 +374,7 @@
         }
 
         .section-divider {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid #e2e8f0;
             margin: 1.5rem 0;
         }
 
@@ -546,7 +566,7 @@
                     <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
                         <strong>{{ exp.company }}</strong><br>
                         {{ exp.position }}<br>
-                        <span style="color: #9ca3af; font-size: 0.875rem;">{{ exp.duration }}</span>
+                        <span style="color: #64748b; font-size: 0.875rem;">{{ exp.duration }}</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -727,7 +747,7 @@
                             {% if application.recruiter_score %}
                             <span class="score-display">{{ application.recruiter_score }}/10</span>
                             {% else %}
-                            <span style="color: #9ca3af;">Non valu</span>
+                            <span style="color: #64748b;">Non valu</span>
                             {% endif %}
                         </div>
                     </div>
@@ -782,7 +802,7 @@
                     <h3>=� Contacter via WhatsApp</h3>
 
                     <div class="whatsapp-templates">
-                        <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1rem;">
+                        <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">
                             Cliquez sur un modle pour envoyer un message WhatsApp
                         </p>
 
@@ -857,7 +877,7 @@
                         <div class="comment-content">{{ comment.content }}</div>
                     </div>
                     {% empty %}
-                    <p style="color: #9ca3af; text-align: center;">Aucun commentaire</p>
+                    <p style="color: #64748b; text-align: center;">Aucun commentaire</p>
                     {% endfor %}
                 </div>
 
@@ -877,13 +897,13 @@
                         </div>
                         {% endif %}
                         {% if log.notes %}
-                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #9ca3af;">
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #64748b;">
                             {{ log.notes }}
                         </div>
                         {% endif %}
                     </div>
                     {% empty %}
-                    <p style="color: #9ca3af; text-align: center;">Aucun contact enregistr</p>
+                    <p style="color: #64748b; text-align: center;">Aucun contact enregistr</p>
                     {% endfor %}
                 </div>
 
@@ -898,13 +918,13 @@
                         </div>
                         <div class="history-user">Par {{ history.changed_by.username }}</div>
                         {% if history.notes %}
-                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #9ca3af;">
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #64748b;">
                             {{ history.notes }}
                         </div>
                         {% endif %}
                     </div>
                     {% empty %}
-                    <p style="color: #9ca3af; text-align: center;">Aucun changement de statut</p>
+                    <p style="color: #64748b; text-align: center;">Aucun changement de statut</p>
                     {% endfor %}
                 </div>
             </div>
