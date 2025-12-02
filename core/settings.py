@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-hrerczhcz@are)&#&m*&-!*ocgdnb)3+s)8zspn&$k@%+cmrl%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','callcentertn.com']
+CSRF_TRUSTED_ORIGINS = [
+    'https://callcentertn.com'
+]
 
 
 # Application definition
