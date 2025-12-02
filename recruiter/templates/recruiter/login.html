@@ -28,7 +28,9 @@
         }
 
         .login-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 1rem;
             padding: 2.5rem;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -43,11 +45,10 @@
             font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #1e293b;
         }
 
         .logo p {
-            color: #14b8a6;
+            color: #3cffea;
             font-size: 0.95rem;
         }
 
@@ -59,16 +60,16 @@
             display: block;
             margin-bottom: 0.5rem;
             font-size: 0.95rem;
-            color: #64748b;
+            color: #e5e7eb;
         }
 
         .form-group input {
             width: 100%;
             padding: 0.875rem;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 0.5rem;
-            color: #1e293b;
+            color: white;
             font-size: 1rem;
             transition: all 0.2s;
         }
@@ -77,11 +78,10 @@
             outline: none;
             border-color: #14b8a6;
             box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
-            background: white;
         }
 
         .form-group input::placeholder {
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .btn-login {
@@ -120,14 +120,14 @@
         }
 
         .back-link a {
-            color: #14b8a6;
+            color: #3cffea;
             text-decoration: none;
             font-size: 0.95rem;
             transition: color 0.2s;
         }
 
         .back-link a:hover {
-            color: #0d9488;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -178,7 +178,7 @@
             </form>
 
             <div class="back-link">
-                <a href="{% url 'home' %}">� Retour � l'accueil</a>
+                <a href="{% url 'home' %}"> Retour à l'accueil</a>
             </div>
         </div>
     </div>
