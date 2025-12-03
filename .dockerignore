@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.env
+venv
+737a95c40efb3874445bb30b5b64698e_venv
+logs/*
+*.log
