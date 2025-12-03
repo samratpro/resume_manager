@@ -25,12 +25,20 @@ SECRET_KEY = 'django-insecure-hrerczhcz@are)&#&m*&-!*ocgdnb)3+s)8zspn&$k@%+cmrl%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','callcentertn.com']
+ALLOWED_HOSTS = ['*', 'callcentertn.com', '38.242.154.223', 'localhost', '127.0.0.1']
+
+# Required when behind Nginx proxy
 CSRF_TRUSTED_ORIGINS = [
-    'https://callcentertn.com'
+    'https://callcentertn.com',
+    'http://callcentertn.com',
+    'https://38.242.154.223',
+    'http://38.242.154.223:8811',
 ]
 
-
+# If you are using HTTPS → tell Django the original request was secure
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False        # aaPanel/Nginx already does the redirect
+USE_TZ = True
 # Application definition
 
 INSTALLED_APPS = [
