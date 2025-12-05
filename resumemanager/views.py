@@ -58,7 +58,7 @@ def application_form(request):
             print(f"Section 2 - Situation: {application.current_situation}")
             print(f"Section 2 - Contract types: {application.contract_types}")
 
-            # Section 3: Languages
+            # Section 3: Languages (kept for backward compatibility)
             application.languages = request.POST.getlist('languages')
             print(f"Section 3 - Languages: {application.languages}")
 
@@ -90,10 +90,17 @@ def application_form(request):
             application.operating_system = request.POST.get('operating_system', '')
             application.has_headset = request.POST.get('has_headset', '')
             application.internet_connection_type = request.POST.get('internet_connection_type', '')
-            application.speedtest_result = request.POST.get('speedtest_result', '')
+
+            # Speedtest - new numeric fields
+            download_speed = request.POST.get('download_speed', '')
+            upload_speed = request.POST.get('upload_speed', '')
+            application.download_speed = float(download_speed) if download_speed else None
+            application.upload_speed = float(upload_speed) if upload_speed else None
+
             application.workspace_type = request.POST.get('workspace_type', '')
             application.work_agreements = request.POST.getlist('work_agreements')
             print(f"Section 8 - Equipment: {application.equipment_types}")
+            print(f"Section 8 - Speedtest: Download={application.download_speed}Mbps, Upload={application.upload_speed}Mbps")
 
             # Section 9: Compensation
             application.payment_modes_accepted = request.POST.getlist('payment_modes_accepted')
@@ -121,9 +128,32 @@ def application_form(request):
             application.interview_availability = request.POST.get('interview_availability', '')
             print(f"Section 13 - WhatsApp: {application.whatsapp_number}")
 
-            # Save application
+            # Save application first
             application.save()
             print(f"Application saved with reference: {application.reference_number}")
+
+            # Section 3: Save Language Details
+            selected_languages = request.POST.getlist('languages')
+            for language in selected_languages:
+                try:
+                    global_level = request.POST.get(f'lang_global_{language}', '')
+                    listening_level = request.POST.get(f'lang_listening_{language}', '')
+                    speaking_level = request.POST.get(f'lang_speaking_{language}', '')
+                    writing_level = request.POST.get(f'lang_writing_{language}', '')
+
+                    if global_level and listening_level and speaking_level and writing_level:
+                        LanguageDetail.objects.create(
+                            application=application,
+                            language=language,
+                            global_level=global_level,
+                            listening_level=listening_level,
+                            speaking_level=speaking_level,
+                            writing_level=writing_level
+                        )
+                        print(f"Language detail saved: {language} - {global_level}")
+                except Exception as e:
+                    print(f"Error saving language {language}: {str(e)}")
+
             print("=" * 50)
 
             messages.success(request, 'Votre candidature a été envoyée avec succès!')

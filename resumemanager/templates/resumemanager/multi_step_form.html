@@ -83,6 +83,26 @@
         margin-bottom: 0.75rem;
         color: #15803d;
     }
+    .language-details-block {
+        background: #f8fafc;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e2e8f0;
+        animation: fadeIn 0.3s;
+    }
+    .language-details-block h4 {
+        color: #2563eb;
+        margin-bottom: 1rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+    .language-detail-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
 </style>
 {% endblock %}
 
@@ -114,6 +134,7 @@
         <div class="form-group">
             <label for="date_of_birth" class="form-label required">Date de naissance</label>
             <input type="date" id="date_of_birth" name="date_of_birth" class="form-input" required>
+            <small id="dob_error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;">Vous devez avoir au moins 18 ans pour postuler.</small>
         </div>
 
         <div class="form-group">
@@ -128,6 +149,11 @@
             </select>
         </div>
 
+        <div class="form-group" id="other_country_group" style="display: none;">
+            <label for="other_country" class="form-label required">Précisez le pays</label>
+            <input type="text" id="other_country" name="other_country" class="form-input" placeholder="Nom du pays">
+        </div>
+
         <div class="form-group">
             <label for="city" class="form-label required">Ville de résidence</label>
             <input type="text" id="city" name="city" class="form-input" placeholder="Votre ville" required>
@@ -136,11 +162,13 @@
         <div class="form-group">
             <label for="phone" class="form-label required">Numéro de téléphone principal (WhatsApp si possible)</label>
             <input type="tel" id="phone" name="phone" class="form-input" placeholder="+216 XX XXX XXX" required>
+            <small id="phone_error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;">Veuillez entrer un numéro de téléphone valide.</small>
         </div>
 
         <div class="form-group">
             <label for="email" class="form-label required">Adresse e-mail</label>
             <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
+            <small id="email_error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;">Veuillez entrer une adresse e-mail valide.</small>
         </div>
 
         <div class="form-group">
@@ -191,6 +219,11 @@
                     <label for="situation5">Autre (préciser)</label>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group" id="other_situation_group" style="display: none;">
+            <label for="other_situation" class="form-label required">Précisez votre situation</label>
+            <input type="text" id="other_situation" name="other_situation" class="form-input" placeholder="Décrivez votre situation actuelle">
         </div>
 
         <div class="form-group">
@@ -285,8 +318,8 @@
             <label class="form-label required">Volume horaire souhaité par semaine</label>
             <div class="radio-group">
                 <div class="radio-item">
-                    <input type="radio" id="hours1" name="weekly_hours" value="Moins de 20h" required>
-                    <label for="hours1">Moins de 20h</label>
+                    <input type="radio" id="hours1" name="weekly_hours" value="Moins de 20 h" required>
+                    <label for="hours1">Moins de 20 h</label>
                 </div>
                 <div class="radio-item">
                     <input type="radio" id="hours2" name="weekly_hours" value="20–30h">
@@ -421,37 +454,47 @@
 
         <div class="form-group">
             <label class="form-label required">Langues maîtrisées (niveau professionnel ou courant)</label>
-            <div class="checkbox-group">
+            <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">
+                Sélectionnez les langues que vous maîtrisez. Pour chaque langue sélectionnée, vous devrez préciser votre niveau de compétence.
+            </p>
+            <div class="checkbox-group" id="languagesCheckboxGroup">
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang1" name="languages" value="Français">
+                    <input type="checkbox" id="lang1" name="languages" value="Français" onchange="toggleLanguageDetails('Français', this.checked)">
                     <label for="lang1">Français</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang2" name="languages" value="Anglais">
+                    <input type="checkbox" id="lang2" name="languages" value="Anglais" onchange="toggleLanguageDetails('Anglais', this.checked)">
                     <label for="lang2">Anglais</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang3" name="languages" value="Allemand">
+                    <input type="checkbox" id="lang3" name="languages" value="Allemand" onchange="toggleLanguageDetails('Allemand', this.checked)">
                     <label for="lang3">Allemand</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang4" name="languages" value="Espagnol">
+                    <input type="checkbox" id="lang4" name="languages" value="Espagnol" onchange="toggleLanguageDetails('Espagnol', this.checked)">
                     <label for="lang4">Espagnol</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang5" name="languages" value="Italien">
+                    <input type="checkbox" id="lang5" name="languages" value="Italien" onchange="toggleLanguageDetails('Italien', this.checked)">
                     <label for="lang5">Italien</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang6" name="languages" value="Portugais">
+                    <input type="checkbox" id="lang6" name="languages" value="Portugais" onchange="toggleLanguageDetails('Portugais', this.checked)">
                     <label for="lang6">Portugais</label>
                 </div>
                 <div class="checkbox-item">
-                    <input type="checkbox" id="lang7" name="languages" value="Néerlandais">
+                    <input type="checkbox" id="lang7" name="languages" value="Néerlandais" onchange="toggleLanguageDetails('Néerlandais', this.checked)">
                     <label for="lang7">Néerlandais</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="lang8" name="languages" value="Arabe" onchange="toggleLanguageDetails('Arabe', this.checked)">
+                    <label for="lang8">Arabe</label>
                 </div>
             </div>
         </div>
+
+        <!-- Dynamic Language Details Container -->
+        <div id="languageDetailsContainer"></div>
 
         <div class="nav-buttons">
             <button type="button" class="btn btn-secondary" onclick="prevSection()">← Précédent</button>
@@ -524,7 +567,7 @@
     <div class="form-section" data-section="5">
         <div class="section-header">
             <div class="section-number">Section 5 / 13</div>
-            <h2 class="section-title">Expérience en Call Center / Vente</h2>
+            <h2 class="section-title">Expérience en centre d’appels / Vente</h2>
         </div>
 
         <div class="form-group">
@@ -674,10 +717,6 @@
                     <input type="radio" id="headset2" name="has_headset" value="Non, mais prêt(e) à en acheter si nécessaire">
                     <label for="headset2">Non, mais prêt(e) à en acheter si nécessaire</label>
                 </div>
-                <div class="radio-item">
-                    <input type="radio" id="headset3" name="has_headset" value="Non, et pas possible pour l'instant">
-                    <label for="headset3">Non, et pas possible pour l'instant</label>
-                </div>
             </div>
         </div>
 
@@ -700,16 +739,43 @@
                     <input type="radio" id="inet4" name="internet_connection_type" value="5G">
                     <label for="inet4">5G</label>
                 </div>
+                <div class="radio-item">
+                    <input type="radio" id="inet4" name="internet_connection_type" value="5G">
+                    <label for="inet4">Je ne sais pas</label>
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="speedtest_result" class="form-label">Résultat de votre test de connexion (Speedtest)</label>
-            <input type="text" id="speedtest_result" name="speedtest_result" class="form-input" placeholder="Ex: Download: 50 Mbps, Upload: 10 Mbps, Ping: 20ms, Date: 28/11/2025">
+            <label class="form-label required">Test de vitesse internet</label>
+            <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                <p style="color: #0c4a6e; margin-bottom: 0.75rem; font-size: 0.9rem;">
+                    <strong>Lancer le test de connexion</strong>
+                </p>
+                <p style="color: #075985; font-size: 0.875rem; margin-bottom: 0.75rem;">
+                    Merci de vérifier votre connexion internet. Cliquez sur ce lien pour lancer un test dans un nouvel onglet, puis indiquez les résultats ci-dessous.
+                </p>
+                <a href="https://www.speedtest.net/" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #0ea5e9; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+                    🌐 Ouvrir Speedtest.net
+                </a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label for="download_speed" class="form-label required">Download (Mbps)</label>
+                    <input type="number" id="download_speed" name="download_speed" class="form-input" placeholder="ex: 25" step="0.01" min="0" required>
+                    <small style="color: #64748b; font-size: 0.875rem;">Vitesse de téléchargement</small>
+                </div>
+                <div>
+                    <label for="upload_speed" class="form-label required">Upload (Mbps)</label>
+                    <input type="number" id="upload_speed" name="upload_speed" class="form-input" placeholder="ex: 5" step="0.01" min="0" required>
+                    <small style="color: #64748b; font-size: 0.875rem;">Vitesse d'envoi</small>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
-            <label class="form-label required">Lieu de travail principal</label>
+            <label class="form-label required">Centre d’appels</label>
             <div class="radio-group">
                 <div class="radio-item">
                     <input type="radio" id="workspace1" name="workspace_type" value="Pièce dédiée au calme" required>
@@ -796,7 +862,7 @@
 
         <div class="form-group">
             <label for="salary_expectations" class="form-label required">Prétentions salariales (en DT)</label>
-            <input type="text" id="salary_expectations" name="salary_expectations" class="form-input" placeholder="Ex: 1500 DT / mois ou 40 DT / heure" required>
+            <input type="text" id="salary_expectations" name="salary_expectations" class="form-input" placeholder="Ex: 1500 DT " required>
         </div>
 
         <div class="form-group">
@@ -938,15 +1004,27 @@
                     🎤 Démarrer l'enregistrement
                 </button>
                 <div id="recordingStatus" style="color: #64748b; margin-top: 1rem;"></div>
+                <div id="audioPlaybackContainer" style="margin-top: 1rem; display: none;">
+                    <!-- Audio player will be inserted here -->
+                </div>
 
                 <p style="margin: 2rem 0; color: #94a3b8;">ou</p>
 
                 <h4 style="color: #1e293b; margin-bottom: 1rem;">Uploader un fichier audio</h4>
-                <input type="file" id="audio_recording" name="audio_recording" class="form-input" accept=".mp3,.wav,.webm,.ogg,.m4a">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="file" id="audio_recording" name="audio_recording" class="form-input" accept=".mp3,.wav,.webm,.ogg,.m4a" onchange="handleFileUpload(this)" style="flex: 1;">
+                    <button type="button" id="clearUploadBtn" onclick="clearUploadedFile()" style="display: none; background: #ef4444; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                        🗑️ Supprimer
+                    </button>
+                </div>
                 <small style="color: #64748b; font-size: 0.875rem;">Formats acceptés : MP3, WAV, WebM, OGG, M4A (max 10 MB)</small>
+                <div id="uploadedFileName" style="color: #10b981; font-size: 0.875rem; margin-top: 0.5rem; display: none;"></div>
 
-                <div class="alert alert-error" style="margin-top: 1.5rem;">
-                    ⚠️ Important : L'enregistrement vocal est obligatoire pour valider votre candidature. Assurez-vous d'être dans un environnement calme pour un enregistrement de qualité.
+                <div class="alert alert-error" style="margin-top: 1.5rem; background: #fef2f2; border: 2px solid #ef4444; padding: 1rem; border-radius: 8px;">
+                    <strong style="color: #991b1b; font-size: 1rem;">⚠️ OBLIGATOIRE</strong>
+                    <p style="color: #7f1d1d; margin-top: 0.5rem; margin-bottom: 0;">
+                        L'enregistrement vocal est <strong>obligatoire</strong> pour valider votre candidature. Vous devez soit enregistrer votre réponse directement, soit uploader un fichier audio. Assurez-vous d'être dans un environnement calme pour un enregistrement de qualité.
+                    </p>
                 </div>
             </div>
         </div>
@@ -972,6 +1050,7 @@
         <div class="form-group">
             <label for="whatsapp_number" class="form-label required">Numéro WhatsApp</label>
             <input type="tel" id="whatsapp_number" name="whatsapp_number" class="form-input" placeholder="+216 XX XXX XXX" required>
+            <small id="whatsapp_error" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;">Veuillez entrer un numéro WhatsApp valide.</small>
             <small style="color: #64748b; font-size: 0.875rem;">
                 Format international recommandé (ex: +216 pour la Tunisie)<br>
                 Si votre numéro WhatsApp est différent de votre numéro de téléphone principal, veuillez indiquer celui que vous utilisez sur WhatsApp.
@@ -1045,6 +1124,53 @@ function validateSection(sectionNumber) {
     const requiredInputs = section.querySelectorAll('input[required], select[required], textarea[required]');
     const errors = [];
 
+    // Section 1 specific validations
+    if (sectionNumber === 1) {
+        // Validate date of birth
+        if (!validateDateOfBirth()) {
+            errors.push('Vous devez avoir au moins 18 ans pour postuler');
+        }
+
+        // Validate email
+        if (!validateEmail()) {
+            errors.push('Veuillez entrer une adresse e-mail valide');
+        }
+
+        // Validate phone number
+        if (!validatePhoneNumber()) {
+            errors.push('Veuillez entrer un numéro de téléphone valide');
+        }
+
+        // Validate "other country" field if "Autre" is selected
+        const countrySelect = document.getElementById('country');
+        const otherCountryInput = document.getElementById('other_country');
+        if (countrySelect && countrySelect.value === 'Autre') {
+            if (!otherCountryInput.value.trim()) {
+                errors.push('Veuillez préciser le nom du pays');
+            }
+        }
+    }
+
+    // Section 2 specific validations
+    if (sectionNumber === 2) {
+        // Validate "other situation" field if "Autre" is selected
+        const currentSituation = document.querySelector('input[name="current_situation"]:checked');
+        const otherSituationInput = document.getElementById('other_situation');
+        if (currentSituation && currentSituation.value === 'Autre') {
+            if (!otherSituationInput.value.trim()) {
+                errors.push('Veuillez préciser votre situation actuelle');
+            }
+        }
+    }
+
+    // Section 13 specific validations
+    if (sectionNumber === 13) {
+        // Validate WhatsApp number
+        if (!validateWhatsAppNumber()) {
+            errors.push('Veuillez entrer un numéro WhatsApp valide');
+        }
+    }
+
     // Validate regular inputs
     requiredInputs.forEach(input => {
         if (input.type === 'radio') {
@@ -1110,6 +1236,28 @@ function validateSection(sectionNumber) {
         if (languages.length === 0) {
             errors.push('Veuillez sélectionner au moins une langue');
         }
+
+        // Validate language details for each selected language
+        languages.forEach(langCheckbox => {
+            const language = langCheckbox.value;
+            const globalLevel = document.querySelector(`select[name="lang_global_${language}"]`);
+            const listeningLevel = document.querySelector(`select[name="lang_listening_${language}"]`);
+            const speakingLevel = document.querySelector(`select[name="lang_speaking_${language}"]`);
+            const writingLevel = document.querySelector(`select[name="lang_writing_${language}"]`);
+
+            if (!globalLevel || !globalLevel.value) {
+                errors.push(`Veuillez sélectionner le niveau global pour ${language}`);
+            }
+            if (!listeningLevel || !listeningLevel.value) {
+                errors.push(`Veuillez sélectionner le niveau de compréhension orale pour ${language}`);
+            }
+            if (!speakingLevel || !speakingLevel.value) {
+                errors.push(`Veuillez sélectionner le niveau d'expression orale pour ${language}`);
+            }
+            if (!writingLevel || !writingLevel.value) {
+                errors.push(`Veuillez sélectionner le niveau d'expression écrite pour ${language}`);
+            }
+        });
     }
 
     if (sectionNumber === 4) {
@@ -1142,6 +1290,14 @@ function validateSection(sectionNumber) {
         }
     }
 
+    if (sectionNumber === 12) {
+        // Audio recording validation
+        const audioInput = document.getElementById('audio_recording');
+        if (!audioInput.files || audioInput.files.length === 0) {
+            errors.push('⚠️ L\'enregistrement vocal est obligatoire. Veuillez enregistrer votre audio ou uploader un fichier audio.');
+        }
+    }
+
     // Display errors
     if (errors.length > 0) {
         alert('Veuillez corriger les erreurs suivantes :\n\n' + errors.join('\n'));
@@ -1169,8 +1325,277 @@ function prevSection() {
     }
 }
 
+// Country code mapping
+const countryPhoneCodes = {
+    'Tunisie': '+216',
+    'France': '+33',
+    'Maroc': '+212',
+    'Algérie': '+213',
+    'Autre': '+00'
+};
+
+// Date of birth validation (18+ years)
+function validateDateOfBirth() {
+    const dobInput = document.getElementById('date_of_birth');
+    const dobError = document.getElementById('dob_error');
+
+    if (!dobInput.value) {
+        dobError.style.display = 'none';
+        return true;
+    }
+
+    const dob = new Date(dobInput.value);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    if (age < 18) {
+        dobError.style.display = 'block';
+        dobInput.setCustomValidity('Vous devez avoir au moins 18 ans pour postuler.');
+        return false;
+    } else {
+        dobError.style.display = 'none';
+        dobInput.setCustomValidity('');
+        return true;
+    }
+}
+
+// Email validation
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email_error');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailInput.value) {
+        emailError.style.display = 'none';
+        return true;
+    }
+
+    if (!emailRegex.test(emailInput.value)) {
+        emailError.style.display = 'block';
+        emailInput.setCustomValidity('Veuillez entrer une adresse e-mail valide.');
+        return false;
+    } else {
+        emailError.style.display = 'none';
+        emailInput.setCustomValidity('');
+        return true;
+    }
+}
+
+// Phone number validation
+function validatePhoneNumber() {
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phone_error');
+    const phoneValue = phoneInput.value.trim();
+
+    if (!phoneValue) {
+        phoneError.style.display = 'none';
+        return true;
+    }
+
+    // Check if it starts with + and contains only digits, spaces, and dashes after the +
+    const phoneRegex = /^\+\d{1,4}[\s\d\-]{6,}$/;
+
+    if (!phoneRegex.test(phoneValue.replace(/\s/g, ''))) {
+        phoneError.style.display = 'block';
+        phoneInput.setCustomValidity('Veuillez entrer un numéro de téléphone valide avec l\'indicatif pays (ex: +216 12345678).');
+        return false;
+    } else {
+        phoneError.style.display = 'none';
+        phoneInput.setCustomValidity('');
+        return true;
+    }
+}
+
+// Update phone prefix based on country selection
+function updatePhonePrefix() {
+    const countrySelect = document.getElementById('country');
+    const phoneInput = document.getElementById('phone');
+    const selectedCountry = countrySelect.value;
+
+    if (selectedCountry && countryPhoneCodes[selectedCountry]) {
+        const prefix = countryPhoneCodes[selectedCountry];
+        const currentValue = phoneInput.value.trim();
+
+        // Only update if field is empty or starts with a different prefix
+        if (!currentValue || currentValue.startsWith('+')) {
+            phoneInput.value = prefix + '';
+        } else if (!currentValue.startsWith(prefix)) {
+            phoneInput.value = prefix + '' + currentValue.replace(/^\+\d+\s*/, '');
+        }
+
+        // Update placeholder
+        phoneInput.placeholder = prefix + 'XX XXX XXX';
+    }
+}
+
+// WhatsApp number validation
+function validateWhatsAppNumber() {
+    const whatsappInput = document.getElementById('whatsapp_number');
+    const whatsappError = document.getElementById('whatsapp_error');
+    const whatsappValue = whatsappInput.value.trim();
+
+    if (!whatsappValue) {
+        whatsappError.style.display = 'none';
+        return true;
+    }
+
+    // Check if it starts with + and contains only digits, spaces, and dashes after the +
+    const phoneRegex = /^\+\d{1,4}[\s\d\-]{6,}$/;
+
+    if (!phoneRegex.test(whatsappValue.replace(/\s/g, ''))) {
+        whatsappError.style.display = 'block';
+        whatsappInput.setCustomValidity('Veuillez entrer un numéro WhatsApp valide avec l\'indicatif pays (ex: +216 12345678).');
+        return false;
+    } else {
+        whatsappError.style.display = 'none';
+        whatsappInput.setCustomValidity('');
+        return true;
+    }
+}
+
+// Language details management
+function toggleLanguageDetails(language, isChecked) {
+    const container = document.getElementById('languageDetailsContainer');
+    const blockId = `lang_details_${language.replace(/\s+/g, '_')}`;
+    const existingBlock = document.getElementById(blockId);
+
+    if (isChecked && !existingBlock) {
+        // Create language details block
+        const detailsBlock = document.createElement('div');
+        detailsBlock.id = blockId;
+        detailsBlock.className = 'language-details-block';
+        detailsBlock.innerHTML = `
+            <h4>${language}</h4>
+
+            <div class="form-group">
+                <label class="form-label required">Niveau global</label>
+                <select name="lang_global_${language}" class="form-select" required>
+                    <option value="">Sélectionnez votre niveau</option>
+                    <option value="A1">A1 – Débutant</option>
+                    <option value="A2">A2 – Élémentaire</option>
+                    <option value="B1">B1 – Intermédiaire</option>
+                    <option value="B2">B2 – Intermédiaire avancé</option>
+                    <option value="C1">C1 – Avancé</option>
+                    <option value="C2">C2 – Bilingue / Langue maternelle</option>
+                </select>
+            </div>
+
+            <div class="language-detail-row">
+                <div class="form-group">
+                    <label class="form-label required">Compréhension orale</label>
+                    <select name="lang_listening_${language}" class="form-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="faible">Faible</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="bon">Bon</option>
+                        <option value="excellent">Excellent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Expression orale</label>
+                    <select name="lang_speaking_${language}" class="form-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="faible">Faible</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="bon">Bon</option>
+                        <option value="excellent">Excellent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Expression écrite</label>
+                    <select name="lang_writing_${language}" class="form-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="faible">Faible</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="bon">Bon</option>
+                        <option value="excellent">Excellent</option>
+                    </select>
+                </div>
+            </div>
+        `;
+        container.appendChild(detailsBlock);
+    } else if (!isChecked && existingBlock) {
+        // Remove language details block
+        existingBlock.remove();
+    }
+}
+
 // Conditional field displays
 document.addEventListener('DOMContentLoaded', function() {
+    // Date of birth validation
+    const dobInput = document.getElementById('date_of_birth');
+    if (dobInput) {
+        dobInput.addEventListener('change', validateDateOfBirth);
+        dobInput.addEventListener('blur', validateDateOfBirth);
+    }
+
+    // Email validation
+    const emailInput = document.getElementById('email');
+    if (emailInput) {
+        emailInput.addEventListener('input', validateEmail);
+        emailInput.addEventListener('blur', validateEmail);
+    }
+
+    // Phone validation
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', validatePhoneNumber);
+        phoneInput.addEventListener('blur', validatePhoneNumber);
+    }
+
+    // WhatsApp validation
+    const whatsappInput = document.getElementById('whatsapp_number');
+    if (whatsappInput) {
+        whatsappInput.addEventListener('input', validateWhatsAppNumber);
+        whatsappInput.addEventListener('blur', validateWhatsAppNumber);
+    }
+
+    // Country selection handler
+    const countrySelect = document.getElementById('country');
+    const otherCountryGroup = document.getElementById('other_country_group');
+    const otherCountryInput = document.getElementById('other_country');
+
+    if (countrySelect) {
+        countrySelect.addEventListener('change', function() {
+            // Show/hide custom country input
+            if (this.value === 'Autre') {
+                otherCountryGroup.style.display = 'block';
+                otherCountryInput.required = true;
+            } else {
+                otherCountryGroup.style.display = 'none';
+                otherCountryInput.required = false;
+                otherCountryInput.value = '';
+            }
+
+            // Update phone prefix
+            updatePhonePrefix();
+        });
+    }
+
+    // Current situation handler
+    document.querySelectorAll('input[name="current_situation"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const otherSituationGroup = document.getElementById('other_situation_group');
+            const otherSituationInput = document.getElementById('other_situation');
+
+            if (this.value === 'Autre') {
+                otherSituationGroup.style.display = 'block';
+                otherSituationInput.required = true;
+            } else {
+                otherSituationGroup.style.display = 'none';
+                otherSituationInput.required = false;
+                otherSituationInput.value = '';
+            }
+        });
+    });
+
     // Availability details
     document.querySelectorAll('input[name="availability"]').forEach(radio => {
         radio.addEventListener('change', function() {
@@ -1215,8 +1640,17 @@ function addExperience() {
             <input type="text" name="exp_company_${experienceCount}" class="form-input" placeholder="Nom de l'entreprise">
         </div>
         <div class="form-group">
-            <label class="form-label">Durée</label>
-            <input type="text" name="exp_duration_${experienceCount}" class="form-input" placeholder="Ex: Jan 2020 - Déc 2022">
+            <label class="form-label">Date de début</label>
+            <input type="date" name="exp_start_date_${experienceCount}" class="form-input" id="exp_start_date_${experienceCount}">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Date de fin</label>
+            <input type="date" name="exp_end_date_${experienceCount}" class="form-input" id="exp_end_date_${experienceCount}">
+            <div style="margin-top: 0.5rem;">
+                <input type="checkbox" id="exp_current_${experienceCount}" name="exp_current_${experienceCount}" onchange="toggleEndDate(${experienceCount})">
+                <label for="exp_current_${experienceCount}" style="display: inline; font-weight: normal; margin-left: 0.25rem;">Poste actuel</label>
+            </div>
+            <small id="exp_date_error_${experienceCount}" style="color: #ef4444; font-size: 0.875rem; display: none; margin-top: 0.25rem;">La date de fin doit être postérieure à la date de début.</small>
         </div>
         <div class="form-group">
             <label class="form-label">Description</label>
@@ -1225,6 +1659,21 @@ function addExperience() {
         <button type="button" class="remove-btn" onclick="this.parentElement.remove()">🗑️ Supprimer</button>
     `;
     container.appendChild(expDiv);
+
+    // Add event listeners for date validation
+    const currentExpNum = experienceCount;
+    const startDateInput = document.getElementById(`exp_start_date_${currentExpNum}`);
+    const endDateInput = document.getElementById(`exp_end_date_${currentExpNum}`);
+
+    if (startDateInput) {
+        startDateInput.addEventListener('change', () => validateExperienceDates(currentExpNum));
+        startDateInput.addEventListener('blur', () => validateExperienceDates(currentExpNum));
+    }
+
+    if (endDateInput) {
+        endDateInput.addEventListener('change', () => validateExperienceDates(currentExpNum));
+        endDateInput.addEventListener('blur', () => validateExperienceDates(currentExpNum));
+    }
 }
 
 // Audio recording
@@ -1246,16 +1695,22 @@ function toggleRecording() {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     const audioUrl = URL.createObjectURL(audioBlob);
 
-                    // Create audio element for playback
-                    const audioElement = document.createElement('audio');
-                    audioElement.src = audioUrl;
-                    audioElement.controls = true;
-                    audioElement.style.marginTop = '1rem';
-
-                    const container = document.getElementById('audioRecorder');
-                    const existing = container.querySelector('audio');
-                    if (existing) existing.remove();
-                    container.appendChild(audioElement);
+                    // Create audio player with delete button
+                    const playbackContainer = document.getElementById('audioPlaybackContainer');
+                    playbackContainer.innerHTML = `
+                        <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <span style="color: #15803d; font-weight: 600;">✅ Enregistrement terminé</span>
+                                <button type="button" onclick="deleteRecording()" style="background: #ef4444; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;">
+                                    🗑️ Supprimer et réenregistrer
+                                </button>
+                            </div>
+                            <audio controls style="width: 100%; margin-top: 0.5rem;">
+                                <source src="${audioUrl}" type="audio/webm">
+                            </audio>
+                        </div>
+                    `;
+                    playbackContainer.style.display = 'block';
 
                     // Convert to File and set to input
                     const file = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
@@ -1263,8 +1718,7 @@ function toggleRecording() {
                     dataTransfer.items.add(file);
                     document.getElementById('audio_recording').files = dataTransfer.files;
 
-                    status.textContent = '✅ Enregistrement terminé et sauvegardé';
-                    status.style.color = '#10b981';
+                    status.textContent = '';
                 });
 
                 mediaRecorder.start();
@@ -1285,18 +1739,158 @@ function toggleRecording() {
     }
 }
 
+// Delete recording and allow re-recording
+function deleteRecording() {
+    // Clear the audio input
+    const audioInput = document.getElementById('audio_recording');
+    audioInput.value = '';
+
+    // Hide the playback container
+    const playbackContainer = document.getElementById('audioPlaybackContainer');
+    playbackContainer.style.display = 'none';
+    playbackContainer.innerHTML = '';
+
+    // Reset status
+    const status = document.getElementById('recordingStatus');
+    status.textContent = '';
+
+    // Reset button
+    const btn = document.getElementById('recordBtn');
+    btn.textContent = '🎤 Démarrer l\'enregistrement';
+    btn.classList.remove('recording');
+
+    // Reset mediaRecorder
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+    }
+    mediaRecorder = null;
+    audioChunks = [];
+}
+
+// Handle file upload
+function handleFileUpload(input) {
+    const clearBtn = document.getElementById('clearUploadBtn');
+    const fileNameDisplay = document.getElementById('uploadedFileName');
+
+    if (input.files && input.files[0]) {
+        clearBtn.style.display = 'inline-block';
+        fileNameDisplay.textContent = `📎 Fichier sélectionné: ${input.files[0].name}`;
+        fileNameDisplay.style.display = 'block';
+
+        // Clear any recorded audio
+        const playbackContainer = document.getElementById('audioPlaybackContainer');
+        playbackContainer.style.display = 'none';
+        playbackContainer.innerHTML = '';
+    } else {
+        clearBtn.style.display = 'none';
+        fileNameDisplay.style.display = 'none';
+    }
+}
+
+// Clear uploaded file
+function clearUploadedFile() {
+    const audioInput = document.getElementById('audio_recording');
+    audioInput.value = '';
+
+    const clearBtn = document.getElementById('clearUploadBtn');
+    clearBtn.style.display = 'none';
+
+    const fileNameDisplay = document.getElementById('uploadedFileName');
+    fileNameDisplay.style.display = 'none';
+    fileNameDisplay.textContent = '';
+}
+
+// Toggle end date field for current position
+function toggleEndDate(expNum) {
+    const currentCheckbox = document.getElementById(`exp_current_${expNum}`);
+    const endDateInput = document.getElementById(`exp_end_date_${expNum}`);
+
+    if (currentCheckbox && currentCheckbox.checked) {
+        endDateInput.disabled = true;
+        endDateInput.value = '';
+        endDateInput.style.backgroundColor = '#f1f5f9';
+    } else {
+        endDateInput.disabled = false;
+        endDateInput.style.backgroundColor = '';
+    }
+}
+
+// Validate experience dates
+function validateExperienceDates(expNum) {
+    const startDateInput = document.getElementById(`exp_start_date_${expNum}`);
+    const endDateInput = document.getElementById(`exp_end_date_${expNum}`);
+    const currentCheckbox = document.getElementById(`exp_current_${expNum}`);
+    const errorElement = document.getElementById(`exp_date_error_${expNum}`);
+
+    if (!startDateInput || !endDateInput || !errorElement) {
+        return true;
+    }
+
+    // Skip validation if current position is checked
+    if (currentCheckbox && currentCheckbox.checked) {
+        errorElement.style.display = 'none';
+        endDateInput.setCustomValidity('');
+        return true;
+    }
+
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+
+    // Skip if either date is empty
+    if (!startDate || !endDate) {
+        errorElement.style.display = 'none';
+        endDateInput.setCustomValidity('');
+        return true;
+    }
+
+    // Validate that end date is after start date
+    if (new Date(endDate) <= new Date(startDate)) {
+        errorElement.style.display = 'block';
+        endDateInput.setCustomValidity('La date de fin doit être postérieure à la date de début.');
+        return false;
+    } else {
+        errorElement.style.display = 'none';
+        endDateInput.setCustomValidity('');
+        return true;
+    }
+}
+
 // Form submission handler
 document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+    // Validate all experience dates before submission
+    let hasDateErrors = false;
+    for (let i = 1; i <= experienceCount; i++) {
+        if (!validateExperienceDates(i)) {
+            hasDateErrors = true;
+        }
+    }
+
+    if (hasDateErrors) {
+        e.preventDefault();
+        alert('Veuillez corriger les erreurs dans les dates d\'expérience.');
+        return false;
+    }
+
     // Collect experiences into JSON
     const experiences = [];
     for (let i = 1; i <= experienceCount; i++) {
         const position = document.querySelector(`[name="exp_position_${i}"]`)?.value;
         const company = document.querySelector(`[name="exp_company_${i}"]`)?.value;
-        const duration = document.querySelector(`[name="exp_duration_${i}"]`)?.value;
+        const startDate = document.querySelector(`[name="exp_start_date_${i}"]`)?.value;
+        const endDate = document.querySelector(`[name="exp_end_date_${i}"]`)?.value;
+        const isCurrent = document.querySelector(`[name="exp_current_${i}"]`)?.checked;
         const description = document.querySelector(`[name="exp_description_${i}"]`)?.value;
 
         if (position || company) {
-            experiences.push({ position, company, duration, description });
+            experiences.push({
+                position,
+                company,
+                start_date: startDate,
+                end_date: isCurrent ? null : endDate,
+                is_current: isCurrent || false,
+                description
+            });
         }
     }
 

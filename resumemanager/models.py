@@ -96,7 +96,9 @@ class Application(models.Model):
     operating_system = models.CharField(max_length=100, blank=True, null=True)
     has_headset = models.CharField(max_length=100, blank=True, null=True)
     internet_connection_type = models.CharField(max_length=100, blank=True, null=True)
-    speedtest_result = models.TextField(blank=True, null=True)
+    speedtest_result = models.TextField(blank=True, null=True)  # Kept for backward compatibility
+    download_speed = models.FloatField(null=True, blank=True, help_text="Download speed in Mbps")
+    upload_speed = models.FloatField(null=True, blank=True, help_text="Upload speed in Mbps")
     workspace_type = models.CharField(max_length=200, blank=True, null=True)
     work_agreements = models.JSONField(default=list, blank=True)
 
@@ -163,37 +165,34 @@ class Application(models.Model):
 
 
 class LanguageDetail(models.Model):
-    LEVEL_CHOICES = [
-        ('native', 'Langue maternelle'),
-        ('fluent', 'Courant (C1-C2)'),
-        ('professional', 'Professionnel (B2)'),
-        ('intermediate', 'Intermédiaire (B1)'),
-        ('basic', 'Notions (A1-A2)'),
+    """Detailed language proficiency for each candidate"""
+
+    GLOBAL_LEVEL_CHOICES = [
+        ('A1', 'A1 – Débutant'),
+        ('A2', 'A2 – Élémentaire'),
+        ('B1', 'B1 – Intermédiaire'),
+        ('B2', 'B2 – Intermédiaire avancé'),
+        ('C1', 'C1 – Avancé'),
+        ('C2', 'C2 – Bilingue / Langue maternelle'),
     ]
 
-    COMFORT_CHOICES = [
-        ('very_comfortable', 'Très à l\'aise'),
-        ('comfortable', 'À l\'aise'),
-        ('moderate', 'Moyennement à l\'aise'),
-        ('difficult', 'Avec difficulté'),
-    ]
-
-    PHONE_EXPERIENCE_CHOICES = [
-        ('yes_often', 'Oui, régulièrement'),
-        ('yes_occasionally', 'Oui, occasionnellement'),
-        ('no_but_confident', 'Non, mais je suis à l\'aise'),
-        ('no_concerns', 'Non, et j\'ai quelques appréhensions'),
+    SKILL_LEVEL_CHOICES = [
+        ('faible', 'Faible'),
+        ('moyen', 'Moyen'),
+        ('bon', 'Bon'),
+        ('excellent', 'Excellent'),
     ]
 
     application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='language_details')
     language = models.CharField(max_length=50)
-    level = models.CharField(max_length=50, choices=LEVEL_CHOICES)
-    oral_level = models.CharField(max_length=50, choices=COMFORT_CHOICES)
-    written_level = models.CharField(max_length=50, choices=COMFORT_CHOICES)
-    phone_experience = models.CharField(max_length=50, choices=PHONE_EXPERIENCE_CHOICES)
+    global_level = models.CharField(max_length=20, choices=GLOBAL_LEVEL_CHOICES, default='B1')
+    listening_level = models.CharField(max_length=20, choices=SKILL_LEVEL_CHOICES, default='moyen')
+    speaking_level = models.CharField(max_length=20, choices=SKILL_LEVEL_CHOICES, default='moyen')
+    writing_level = models.CharField(max_length=20, choices=SKILL_LEVEL_CHOICES, default='moyen')
 
     class Meta:
         unique_together = ['application', 'language']
+        ordering = ['language']
 
     def __str__(self):
-        return f"{self.application.email} - {self.language}"
+        return f"{self.application.reference_number} - {self.language} ({self.global_level})"

@@ -5,7 +5,7 @@ from .models import Application, LanguageDetail
 class LanguageDetailInline(admin.TabularInline):
     model = LanguageDetail
     extra = 0
-    fields = ['language', 'level', 'oral_level', 'written_level', 'phone_experience']
+    fields = ['language', 'global_level', 'listening_level', 'speaking_level', 'writing_level']
 
 
 @admin.register(Application)
@@ -51,7 +51,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         ('Section 8: Matériel & Conditions', {
             'fields': (
                 'equipment_types', 'operating_system', 'has_headset',
-                'internet_connection_type', 'speedtest_result', 'workspace_type', 'work_agreements'
+                'internet_connection_type', 'download_speed', 'upload_speed',
+                'workspace_type', 'work_agreements'
             )
         }),
         ('Section 9: Rémunération (DT)', {
@@ -88,6 +89,6 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 @admin.register(LanguageDetail)
 class LanguageDetailAdmin(admin.ModelAdmin):
-    list_display = ['application', 'language', 'level', 'oral_level', 'written_level', 'phone_experience']
-    list_filter = ['language', 'level']
-    search_fields = ['application__email', 'application__first_name', 'application__last_name']
+    list_display = ['application', 'language', 'global_level', 'listening_level', 'speaking_level', 'writing_level']
+    list_filter = ['language', 'global_level']
+    search_fields = ['application__email', 'application__first_name', 'application__last_name', 'application__reference_number']

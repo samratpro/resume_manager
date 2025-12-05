@@ -234,7 +234,7 @@
         <div class="navbar-content">
             <h1>CALL CENTER TN</h1>
             <div class="navbar-links">
-                <a href="{% url 'recruiter_dashboard' %}" class="active">Dashboard</a>
+                <a href="{% url 'recruiter_dashboard' %}" class="active">Tableau de bord</a>
                 <a href="{% url 'candidate_list' %}">Candidats</a>
                 <span>{{ user.username }}</span>
                 <a href="{% url 'recruiter_logout' %}">Deconnexion</a>
@@ -246,38 +246,33 @@
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
-            <h2>Dashboard Recruteur</h2>
-            <p>Apercu de vos candidatures</p>
+            <h2>Recruteur de tableau de bord</h2>
+            <p>Aperçu de vos candidatures</p>
         </div>
 
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="icon">&#x1F195;</div>
                 <div class="number">{{ stats.new_24h }}</div>
-                <div class="label">New (24h)</div>
+                <div class="label">Nouvelle (24h)</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon">&#x1F4F2;</div>
                 <div class="number">{{ stats.to_contact }}</div>
-                <div class="label">To Contact</div>
+                <div class="label">Pour contacter</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon">&#x1F4C5;</div>
                 <div class="number">{{ stats.interviews }}</div>
-                <div class="label">Interviews</div>
+                <div class="label">Entretiens</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon">&#x2705;</div>
                 <div class="number">{{ stats.hired }}</div>
-                <div class="label">Hired</div>
+                <div class="label">Embauché</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon">&#x1F4CA;</div>
                 <div class="number">{{ stats.total }}</div>
                 <div class="label">Total Candidatures</div>
             </div>
@@ -285,7 +280,7 @@
 
         <!-- Recent Applications -->
         <div class="section-header">
-            <h3>Candidatures Recentes</h3>
+            <h3>Candidatures récentes</h3>
             <a href="{% url 'candidate_list' %}" class="btn">Voir tout &rarr;</a>
         </div>
 
@@ -293,9 +288,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Reference</th>
+                        <th>Référence</th>
                         <th>Nom</th>
-                        <th>Email</th>
+                        <th>E-mail</th>
                         <th>Pays</th>
                         <th>Statut</th>
                         <th>Date</th>

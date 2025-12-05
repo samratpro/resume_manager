@@ -409,7 +409,7 @@
         <div class="navbar-content">
             <h1>CALL CENTER TN</h1>
             <div class="navbar-links">
-                <a href="{% url 'recruiter_dashboard' %}">Dashboard</a>
+                <a href="{% url 'recruiter_dashboard' %}">Tableau de bord</a>
                 <a href="{% url 'candidate_list' %}">Candidats</a>
                 <span>{{ user.username }}</span>
                 <a href="{% url 'recruiter_logout' %}">Dconnexion</a>
@@ -419,7 +419,7 @@
 
     <!-- Main Content -->
     <div class="container">
-        <a href="{% url 'candidate_list' %}" class="back-link"> Retour  la liste</a>
+        <a href="{% url 'candidate_list' %}" class="back-link">Retour à la liste</a>
 
         <!-- Candidate Header -->
         <div class="candidate-header">
@@ -428,11 +428,11 @@
 
             <div class="candidate-meta">
                 <div class="div">
-                    <div class="label">Email</div>
+                    <div class="label">E-mail</div>
                     <div class="value">{{ application.email }}</div>
                 </div>
                 <div class="div">
-                    <div class="label">Tlphone</div>
+                    <div class="label">Téléphone</div>
                     <div class="value">{{ application.phone }}</div>
                 </div>
                 <div class="div">
@@ -462,7 +462,7 @@
                             {% if application.linkedin %}
                             <a href="{{ application.linkedin }}" target="_blank" style="color: #5eead4; font-weight: 500;">{{ application.linkedin }}</a>
                             {% else %}
-                            Non renseign
+                            Non renseigné
                             {% endif %}
                         </div>
                     </div>
@@ -504,7 +504,7 @@
                     </div>
                     {% endif %}
                     <div class="info-group">
-                        <div class="label">Flexibilit temps plein</div>
+                        <div class="label">Flexibilité temps plein</div>
                         <div class="value">{{ application.get_full_time_flexibility_display }}</div>
                     </div>
                     <div class="info-group">
@@ -535,17 +535,39 @@
 
                 <!-- Section 3: Languages -->
                 <div class="card">
-                    <h3> Langues</h3>
-                    <div class="value">
-                        {% for language in application.languages %}
-                        <span class="tag">{{ language }}</span>
+                    <h3>📚 Langues maîtrisées</h3>
+                    {% if application.language_details.all %}
+                        {% for lang_detail in application.language_details.all %}
+                        <div style="background: rgba(15, 23, 42, 0.4); padding: 1.25rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.15);">
+                            <h4 style="color: #5eead4; font-size: 1.125rem; margin-bottom: 0.75rem; font-weight: 600;">{{ lang_detail.language }}</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
+                                <div>
+                                    <div class="label" style="color: #cbd5e1; font-size: 0.875rem; margin-bottom: 0.25rem;">Niveau global</div>
+                                    <div class="value" style="color: #f1f5f9; font-weight: 600;">{{ lang_detail.get_global_level_display }}</div>
+                                </div>
+                                <div>
+                                    <div class="label" style="color: #cbd5e1; font-size: 0.875rem; margin-bottom: 0.25rem;">Compréhension orale</div>
+                                    <div class="value" style="color: #f1f5f9; font-weight: 600; text-transform: capitalize;">{{ lang_detail.get_listening_level_display }}</div>
+                                </div>
+                                <div>
+                                    <div class="label" style="color: #cbd5e1; font-size: 0.875rem; margin-bottom: 0.25rem;">Expression orale</div>
+                                    <div class="value" style="color: #f1f5f9; font-weight: 600; text-transform: capitalize;">{{ lang_detail.get_speaking_level_display }}</div>
+                                </div>
+                                <div>
+                                    <div class="label" style="color: #cbd5e1; font-size: 0.875rem; margin-bottom: 0.25rem;">Expression écrite</div>
+                                    <div class="value" style="color: #f1f5f9; font-weight: 600; text-transform: capitalize;">{{ lang_detail.get_writing_level_display }}</div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
-                    </div>
+                    {% else %}
+                        <p style="color: #cbd5e1; text-align: center;">Aucune langue renseignée</p>
+                    {% endif %}
                 </div>
 
                 <!-- Section 4: Target Positions -->
                 <div class="card">
-                    <h3> Postes Viss</h3>
+                    <h3> Postes visés</h3>
                     <div class="info-group">
                         <div class="label">Postes d'intrt</div>
                         <div class="value">
@@ -579,7 +601,18 @@
                     <div style="background: rgba(15, 23, 42, 0.4); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.15);">
                         <strong style="color: #f1f5f9;">{{ exp.company }}</strong><br>
                         <span style="color: #e2e8f0;">{{ exp.position }}</span><br>
-                        <span style="color: #cbd5e1; font-size: 0.875rem;">{{ exp.duration }}</span>
+                        <span style="color: #cbd5e1; font-size: 0.875rem;">
+                            {% if exp.start_date %}
+                                {{ exp.start_date }} - {% if exp.is_current %}Présent{% elif exp.end_date %}{{ exp.end_date }}{% else %}Non renseigné{% endif %}
+                            {% elif exp.duration %}
+                                {{ exp.duration }}
+                            {% else %}
+                                Durée non renseignée
+                            {% endif %}
+                        </span>
+                        {% if exp.description %}
+                        <p style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">{{ exp.description }}</p>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
@@ -587,9 +620,9 @@
 
                 <!-- Section 7: Performance & KPIs -->
                 <div class="card">
-                    <h3>= Performance & KPIs</h3>
+                    <h3>Performance & KPIs</h3>
                     <div class="info-group">
-                        <div class="label">Travail avec KPIs</div>
+                        <div class="label">Travail avec KPI</div>
                         <div class="value">{{ application.worked_with_kpis|yesno:"Oui,Non,Non renseign" }}</div>
                     </div>
                     <div class="info-group">
@@ -606,7 +639,7 @@
 
                 <!-- Section 8: Equipment -->
                 <div class="card">
-                    <h3>Matriel & Conditions</h3>
+                    <h3>Matériel & Conditions</h3>
                     <div class="info-group">
                         <div class="label">Type d'quipement</div>
                         <div class="value">
@@ -616,7 +649,7 @@
                         </div>
                     </div>
                     <div class="info-group">
-                        <div class="label">Systme d'exploitation</div>
+                        <div class="label">Système d’exploitation</div>
                         <div class="value">{{ application.operating_system }}</div>
                     </div>
                     <div class="info-group">
@@ -627,13 +660,30 @@
                         <div class="label">Type de connexion Internet</div>
                         <div class="value">{{ application.internet_connection_type }}</div>
                     </div>
+                    {% if application.download_speed or application.upload_speed %}
+                    <div class="info-group">
+                        <div class="label">📊 Test de vitesse (Speedtest)</div>
+                        <div class="value">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(15, 23, 42, 0.4); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.15);">
+                                <div>
+                                    <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.25rem;">⬇️ Download</div>
+                                    <div style="color: #5eead4; font-weight: 600; font-size: 1.125rem;">{{ application.download_speed|default:"N/A" }} Mbps</div>
+                                </div>
+                                <div>
+                                    <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.25rem;">⬆️ Upload</div>
+                                    <div style="color: #5eead4; font-weight: 600; font-size: 1.125rem;">{{ application.upload_speed|default:"N/A" }} Mbps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Section 9: Compensation -->
                 <div class="card">
                     <h3>Rmunration</h3>
                     <div class="info-group">
-                        <div class="label">Modes de paiement accepts</div>
+                        <div class="label">Modes de paiement acceptés</div>
                         <div class="value">
                             {% for mode in application.payment_modes_accepted %}
                             <span class="tag">{{ mode }}</span>
@@ -641,15 +691,15 @@
                         </div>
                     </div>
                     <div class="info-group">
-                        <div class="label">Mode prfr</div>
+                        <div class="label">Mode préf</div>
                         <div class="value">{{ application.preferred_payment_mode }}</div>
                     </div>
                     <div class="info-group">
-                        <div class="label">Attentes salariales</div>
+                        <div class="label">Prétentions salariales</div>
                         <div class="value">{{ application.salary_expectations }} DT</div>
                     </div>
                     <div class="info-group">
-                        <div class="label">Rmunration variable</div>
+                        <div class="label">Rémunération variable</div>
                         <div class="value">{{ application.accept_variable_compensation|yesno:"Accepte,Refuse,Non renseign" }}</div>
                     </div>
                 </div>
@@ -659,28 +709,28 @@
                     <h3>Mindset & Soft Skills</h3>
                     {% if application.difficult_client_response %}
                     <div class="info-group">
-                        <div class="label">Rponse client difficile</div>
+                        <div class="label">Réponse client difficile</div>
                         <div class="value">{{ application.difficult_client_response }}</div>
                     </div>
                     {% endif %}
                     <div class="info-group">
-                        <div class="label">Environnement de travail prfr</div>
+                        <div class="label">Environnement de travail préféré</div>
                         <div class="value">{{ application.preferred_work_environment }}</div>
                     </div>
                     {% if application.three_qualities %}
                     <div class="info-group">
-                        <div class="label">3 Qualits</div>
+                        <div class="label">3 qualités</div>
                         <div class="value">{{ application.three_qualities }}</div>
                     </div>
                     {% endif %}
                     {% if application.three_improvements %}
                     <div class="info-group">
-                        <div class="label">3 Points d'amlioration</div>
+                        <div class="label">3 points d'amélioration</div>
                         <div class="value">{{ application.three_improvements }}</div>
                     </div>
                     {% endif %}
                     <div class="info-group">
-                        <div class="label">A coach un collgue</div>
+                        <div class="label">A coaché un collègue</div>
                         <div class="value">{{ application.has_coached_colleague|yesno:"Oui,Non,Non renseign" }}</div>
                     </div>
                 </div>
@@ -715,7 +765,7 @@
                         Votre navigateur ne supporte pas la lecture audio.
                     </audio>
                     <br><br>
-                    <a href="{{ application.audio_recording.url }}" download class="file-link"> Tlcharger Audio</a>
+                    <a href="{{ application.audio_recording.url }}" download class="file-link"> Télécharger l’audio</a>
                     {% else %}
                     <p>Aucun enregistrement audio fourni</p>
                     {% endif %}
@@ -725,12 +775,12 @@
                 <div class="card">
                     <h3>WhatsApp Interview</h3>
                     <div class="info-group">
-                        <div class="label">Numro WhatsApp</div>
+                        <div class="label">Numéro WhatsApp</div>
                         <div class="value">{{ application.whatsapp_number }}</div>
                     </div>
                     {% if application.interview_availability %}
                     <div class="info-group">
-                        <div class="label">Disponibilits pour entretien</div>
+                        <div class="label">Disponibilité pour entretien</div>
                         <div class="value">{{ application.interview_availability }}</div>
                     </div>
                     {% endif %}
@@ -760,7 +810,7 @@
                             {% if application.recruiter_score %}
                             <span class="score-display">{{ application.recruiter_score }}/10</span>
                             {% else %}
-                            <span style="color: #cbd5e1;">Non valu</span>
+                            <span style="color: #cbd5e1;">Non évalué</span>
                             {% endif %}
                         </div>
                     </div>
@@ -785,7 +835,7 @@
                             <label>Notes (optionnel)</label>
                             <textarea name="notes" rows="2" placeholder="Raison du changement..."></textarea>
                         </div>
-                        <button type="submit" class="btn">Mettre jour le statut</button>
+                        <button type="submit" class="btn">Mettre à jour le statut</button>
                     </form>
 
                     <div class="section-divider"></div>
@@ -816,7 +866,7 @@
 
                     <div class="whatsapp-templates">
                         <p style="color: #cbd5e1; font-size: 0.875rem; margin-bottom: 1rem;">
-                            Click on a template to send a WhatsApp message
+                            Cliquez sur un modèle pour envoyer un message WhatsApp
                         </p>
 
                         <a href="https://wa.me/{{ application.whatsapp_number|cut:'+' }}?text=Hi {{ application.first_name }},%0A%0AThank you for applying to CALL CENTER TN.%0A%0AWe would like to schedule a first interview via WhatsApp. Could you please share your available time slots this week?%0A%0ABest regards,%0ACALL CENTER TN Recruitment Team"
@@ -856,7 +906,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Message envoy (optionnel)</label>
+                            <label>Message envoyé (optionnel)</label>
                             <textarea name="message_sent" rows="2" placeholder="Contenu du message..."></textarea>
                         </div>
                         <div class="form-group">
@@ -870,7 +920,7 @@
 
                 <!-- Comments -->
                 <div class="card">
-                    <h3>Commentaires Internes</h3>
+                    <h3>Commentaire Internes</h3>
 
                     <form method="POST" style="margin-bottom: 1.5rem;">
                         {% csrf_token %}
@@ -916,7 +966,7 @@
                         {% endif %}
                     </div>
                     {% empty %}
-                    <p style="color: #cbd5e1; text-align: center;">Aucun contact enregistr</p>
+                    <p style="color: #cbd5e1; text-align: center;">Aucun contact enregistré</p>
                     {% endfor %}
                 </div>
 

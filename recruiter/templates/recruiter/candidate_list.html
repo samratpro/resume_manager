@@ -354,7 +354,7 @@
         <div class="navbar-content">
             <h1>CALL CENTER TN</h1>
             <div class="navbar-links">
-                <a href="{% url 'recruiter_dashboard' %}">Dashboard</a>
+                <a href="{% url 'recruiter_dashboard' %}">Tableau de bord</a>
                 <a href="{% url 'candidate_list' %}" class="active">Candidats</a>
                 <span>{{ user.username }}</span>
                 <a href="{% url 'recruiter_logout' %}">Deconnexion</a>
@@ -457,7 +457,7 @@
                     </div>
 
                     <div class="filter-group">
-                        <label>Experience Call Center : </label>
+                        <label>Expérimentée : </label>
                         <select name="has_experience">
                             <option value="">Tous</option>
                             <option value="yes" {% if current_filters.has_experience == 'yes' %}selected{% endif %}>Oui</option>
@@ -476,10 +476,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th><a href="?{{ current_filters.urlencode }}&sort=reference_number">Reference</a></th>
+                        <th><a href="?{{ current_filters.urlencode }}&sort=reference_number">Référence</a></th>
                         <th><a href="?{{ current_filters.urlencode }}&sort=last_name">Nom</a></th>
-                        <th>Email</th>
-                        <th>Telephone</th>
+                        <th>E-mail</th>
+                        <th>Téléphone</th>
                         <th>Pays</th>
                         <th>Statut</th>
                         <th>Score</th>
