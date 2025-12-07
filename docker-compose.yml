@@ -29,9 +29,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: securepassword123
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   static_volume:
-  media_version:
+  media_volume: 
   postgres_data:
