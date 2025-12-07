@@ -401,7 +401,7 @@
                     </div>
 
                     <div class="filter-group">
-                        <label>Poste vis : </label>
+                        <label>Poste visés : </label>
                         <select name="position">
                             <option value="">Tous</option>
                             {% for position in all_positions %}
@@ -505,7 +505,7 @@
                             {% if app.recruiter_score %}
                             <span class="score-display">{{ app.recruiter_score }}/10</span>
                             {% else %}
-                            <span class="no-score">Non valu</span>
+                            <span class="no-score">non-valeur</span>
                             {% endif %}
                         </td>
                         <td>

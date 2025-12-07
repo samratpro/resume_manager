@@ -569,7 +569,7 @@
                 <div class="card">
                     <h3> Postes visés</h3>
                     <div class="info-group">
-                        <div class="label">Postes d'intrt</div>
+                        <div class="label">Postes d'intérêt</div>
                         <div class="value">
                             {% for position in application.target_positions %}
                             <span class="tag">{{ position }}</span>
@@ -626,7 +626,7 @@
                         <div class="value">{{ application.worked_with_kpis|yesno:"Oui,Non,Non renseign" }}</div>
                     </div>
                     <div class="info-group">
-                        <div class="label">Top performer</div>
+                        <div class="label">Meilleur performeur</div>
                         <div class="value">{{ application.top_performer|yesno:"Oui,Non,Non renseign" }}</div>
                     </div>
                     {% if application.achievement_story %}
@@ -706,7 +706,7 @@
 
                 <!-- Section 10: Mindset -->
                 <div class="card">
-                    <h3>Mindset & Soft Skills</h3>
+                    <h3>Mentalité et compétences interpersonnelles</h3>
                     {% if application.difficult_client_response %}
                     <div class="info-group">
                         <div class="label">Réponse client difficile</div>
@@ -886,7 +886,7 @@
 
                         <a href="https://wa.me/{{ application.whatsapp_number|cut:'+' }}"
                            target="_blank" class="btn btn-secondary">
-                             Custom Message
+                             Message Personnalisé
                         </a>
                     </div>
 
