@@ -110,6 +110,9 @@ else:
         }
     }
 
+# python-decouple
+# psycopg2-binary
+
 
 # DATABASES = {
 #     'default': {
