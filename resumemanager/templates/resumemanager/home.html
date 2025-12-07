@@ -270,6 +270,151 @@
             font-size: 0.95rem;
             line-height: 1.5;
         }
+
+        /* Enhanced Mobile Responsive Styles */
+        @media (max-width: 640px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            .recruiter-link {
+                font-size: 0.75rem;
+            }
+
+            .hero-section {
+                padding: 2rem 0 3rem;
+            }
+
+            .badge {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .features {
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.25rem;
+            }
+
+            .feature-content h3 {
+                font-size: 1rem;
+            }
+
+            .feature-content p {
+                font-size: 0.875rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .time-estimate {
+                text-align: center;
+            }
+
+            .process-section {
+                padding-bottom: 3rem;
+            }
+
+            .process-card {
+                padding: 1.5rem;
+            }
+
+            .process-card h3 {
+                font-size: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .process-number {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.25rem;
+            }
+
+            .process-item h4 {
+                font-size: 1rem;
+            }
+
+            .process-item p {
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 767px) {
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .container {
+                max-width: 90%;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .cta-button {
+                display: inline-flex;
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .cta-button {
+                min-height: 48px;
+            }
+
+            .recruiter-link {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .hero-section {
+                padding: 1.5rem 0 2rem;
+            }
+
+            .features {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .feature-item {
+                flex: 1 1 45%;
+            }
+        }
     </style>
 </head>
 <body>

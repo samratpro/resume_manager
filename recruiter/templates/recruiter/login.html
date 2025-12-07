@@ -129,6 +129,82 @@
         .back-link a:hover {
             color: #ffffff;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .login-container {
+                padding: 0.5rem;
+            }
+
+            .login-card {
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+            }
+
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .logo p {
+                font-size: 0.875rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.25rem;
+            }
+
+            .form-group label {
+                font-size: 0.875rem;
+            }
+
+            .form-group input {
+                padding: 0.75rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .btn-login {
+                padding: 0.875rem;
+                font-size: 0.875rem;
+            }
+
+            .error-message {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .back-link {
+                margin-top: 1.25rem;
+            }
+
+            .back-link a {
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .login-container {
+                max-width: 500px;
+            }
+
+            .login-card {
+                padding: 2rem;
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-login {
+                min-height: 48px;
+            }
+
+            .form-group input {
+                min-height: 44px;
+            }
+        }
     </style>
 </head>
 <body>

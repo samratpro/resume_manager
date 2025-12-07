@@ -401,6 +401,171 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.25rem;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .navbar-links a {
+                font-size: 0.875rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .back-link {
+                margin-bottom: 1rem;
+                font-size: 0.875rem;
+            }
+
+            .candidate-header {
+                padding: 1rem;
+            }
+
+            .candidate-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .candidate-header .reference {
+                font-size: 1rem;
+            }
+
+            .candidate-meta {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .card h3 {
+                font-size: 1.125rem;
+            }
+
+            .info-group {
+                margin-bottom: 0.875rem;
+            }
+
+            .info-group .label {
+                font-size: 0.8125rem;
+            }
+
+            .info-group .value {
+                font-size: 0.9375rem;
+            }
+
+            .status-badge {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .form-group select,
+            .form-group input,
+            .form-group textarea {
+                padding: 0.625rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .btn {
+                width: 100%;
+                padding: 0.875rem 1rem;
+                font-size: 0.875rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .comment {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .comment-header {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .comment-date {
+                font-size: 0.75rem;
+            }
+
+            .comment-content {
+                font-size: 0.875rem;
+            }
+
+            .history-item {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1023px) {
+            .navbar-content {
+                padding: 0 1.25rem;
+            }
+
+            .container {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .candidate-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .btn {
+                min-height: 48px;
+            }
+
+            .navbar-links a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .form-group select,
+            .form-group input,
+            .form-group textarea {
+                min-height: 44px;
+            }
+
+            .back-link {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        /* Mobile landscape optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .navbar-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .candidate-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>

@@ -346,6 +346,171 @@
         .no-audio {
             color: #cbd5e1;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.25rem;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .navbar-links a {
+                font-size: 0.875rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.125rem;
+            }
+
+            .page-header p {
+                font-size: 0.875rem;
+            }
+
+            .filters-section {
+                padding: 0.75rem;
+            }
+
+            .filters-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .filters-header h3 {
+                font-size: 1.125rem;
+            }
+
+            .btn-clear {
+                width: 100%;
+                text-align: center;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.375rem;
+            }
+
+            .filter-group label {
+                width: 100%;
+                font-size: 0.875rem;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+                padding: 0.625rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .btn-filter {
+                width: 100%;
+                padding: 0.75rem;
+            }
+
+            .search-bar input {
+                padding: 0.625rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            /* Make table scrollable on mobile */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 900px;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8125rem;
+            }
+
+            th {
+                font-size: 0.6875rem;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-view {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1023px) {
+            .navbar-content {
+                padding: 0 1.25rem;
+            }
+
+            .container {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-filter,
+            .btn-clear,
+            .btn-view {
+                min-height: 44px;
+            }
+
+            .navbar-links a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .filter-group select,
+            .filter-group input,
+            .search-bar input {
+                min-height: 44px;
+            }
+        }
+
+        /* Mobile landscape optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .navbar-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>

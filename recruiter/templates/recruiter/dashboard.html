@@ -226,6 +226,147 @@
         .btn-view:hover {
             background: #14b8a6;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.25rem;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .navbar-links a {
+                font-size: 0.875rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .page-header p {
+                font-size: 0.875rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.25rem;
+            }
+
+            .stat-card .icon {
+                font-size: 1.75rem;
+            }
+
+            .stat-card .number {
+                font-size: 2rem;
+            }
+
+            .stat-card .label {
+                font-size: 0.875rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Make table scrollable on mobile */
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            th {
+                font-size: 0.75rem;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-view {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 1.25rem;
+            }
+
+            .container {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .btn-view {
+                min-height: 44px;
+            }
+
+            .navbar-links a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Mobile landscape optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navbar-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </head>
 <body>
